@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AwesomeNotes.MainPage"
+             xmlns:vm="clr-namespace:AwesomeNotes.ViewModel"
+             xmlns:controls="clr-namespace:AwesomeNotes.Controls"
+             xmlns:cp="https://trungnt2910.github.io/schemas/maui/2022/colorpicker" 
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:model="clr-namespace:AwesomeNotes.Model"
+             xmlns:sho="http://sharpnado.com"
+             Background="{Binding BackgroundColor}" Shell.BackgroundColor="{Binding BackgroundColor}" x:DataType="vm:MainViewModel" >
+  
+    <Shell.TitleView>
+        <Grid BackgroundColor="{Binding BackgroundColor}" VerticalOptions="Fill" HorizontalOptions="FillAndExpand" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label 
+                Text="Awesome Notes" 
+                FontFamily="IWantMy" 
+                TextColor="{Binding TextColor}" 
+                HeightRequest="50" 
+                BackgroundColor="{Binding BackgroundColor}"
+                VerticalTextAlignment="Center" 
+                VerticalOptions="CenterAndExpand"
+                FontSize="Large"
+                HorizontalTextAlignment="Center"/>
+            <ImageButton Grid.Column="1" Source="color.png" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" Command="{Binding ChangeBackgroundCommand}" />
+            <ImageButton Grid.Column="2" Source="kalendar.png" WidthRequest="35" HeightRequest="35" VerticalOptions="Center" Command="{Binding OpenCalendarCommand}"/>
+        </Grid>
+    </Shell.TitleView>
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25" Padding="10">
+            
+            <!-- Catgories -->
+            
+            <controls:DraggableCollectionView
+                IsVisible="{Binding CanChangeBackground, Converter={StaticResource BoolInvertedConverter}}" 
+                ItemsSource="{Binding Categories}" 
+                HeightRequest="55" 
+                ItemHeight="55"
+                ItemWidth="120"
+                ItemSpacing="10"
+                HorizontalOptions="FillAndExpand" 
+                CollectionLayout="Horizontal"
+                EnableDragAndDrop="True" 
+                DragAndDropTrigger="LongTap"
+                SelectedItem="{Binding Categorie}"                
+                TapCommand="{Binding CategorieSelectionChangedCommand}"
+                DragAndDropEndedCommand="{Binding DragAndDropEndedCommand}"
+                >
+                <controls:DraggableCollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Categorie">
+                        <sho:DraggableViewCell>
+                            <Grid>
+                                <Border 
+    
+                                      Stroke="{Binding TextColor}"
+                                      StrokeThickness="3"
+                                      WidthRequest="115"
+                                      StrokeShape="RoundRectangle 20, 20, 20, 20"
+                                      BackgroundColor="{Binding BackgroundColor}">
+                                        <Label 
+                                           Text="{Binding Name}" 
+                                           HorizontalOptions="Center" 
+                                           VerticalOptions="Center"  
+                                           HorizontalTextAlignment="Center" 
+                                           VerticalTextAlignment="Center" 
+                                           BackgroundColor="{Binding BackgroundColor}" 
+                                           TextColor="{Binding TextColor}"  
+                                           FontSize="10" 
+                                           WidthRequest="100"/>             
+                                    </Border>
+                                                                    
+                                <Grid.Triggers>
+                                    <DataTrigger
+                                    Binding="{Binding Source={x:Reference DraggableViewCell}, Path=IsDragAndDropping}"
+                                    TargetType="Grid"
+                                    Value="True">
+                                        <Setter Property="Opacity"  Value="0.5" />
+                                    </DataTrigger>
+                                </Grid.Triggers>
+                            </Grid>
+                        </sho:DraggableViewCell>
+                      
+                        
+                    </DataTemplate>
+                </controls:DraggableCollectionView.ItemTemplate>
+            </controls:DraggableCollectionView>
+            
+            <!-- Notes -->
+                
+            <CollectionView 
+                 IsVisible="{Binding CanChangeBackground, Converter={StaticResource BoolInvertedConverter}}" 
+                 ItemsSource="{Binding Notes}" 
+                 HeightRequest="500" 
+                 HorizontalOptions="FillAndExpand" 
+                 ItemsLayout="VerticalGrid, 3"
+                 SelectedItem="{Binding Note}"
+                 SelectionChangedCommand="{Binding CategorieSelectionChangedCommand}"
+                 SelectionMode="Single">    
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Note">
+                        <Grid>
+                            <Border 
+                            WidthRequest="120"
+                                HeightRequest="120"
+                            StrokeShape="RoundRectangle 5, 5, 5, 5"
+                            BackgroundColor="{Binding Background}">
+                                <VerticalStackLayout Spacing="3" Margin="3">
+                                    <Border 
+                                        Stroke="{Binding TextColor}"
+                                        StrokeThickness="2"
+                                        WidthRequest="115"
+                                        StrokeShape="RoundRectangle 5, 5, 0, 0"
+                                        BackgroundColor="{Binding Background}"
+                                        >
+                                        <Label Text="{Binding Title}"
+                                               HorizontalTextAlignment="Center" 
+                                                VerticalTextAlignment="Center" 
+                                                BackgroundColor="{Binding Background}" 
+                                                TextColor="{Binding TextColor}"  
+                                                FontSize="10" 
+                                                WidthRequest="100"/>                                
+                                    </Border>
+                                    <Label 
+                                         Text="{Binding Text}"                                       
+                                         HorizontalTextAlignment="Start" 
+                                         VerticalTextAlignment="Start" 
+                                         BackgroundColor="{Binding Background}" 
+                                         TextColor="{Binding TextColor}"  
+                                         FontSize="10" 
+                                         WidthRequest="100"/>   
+                                    <!-- beim anklicken soll ein abfrage menü erscheinen Löschen Bearbeiten Teilen Ins Archiev-->
+                                </VerticalStackLayout>
+                                
+                            </Border>
+                        </Grid>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <VerticalStackLayout Spacing="20" IsVisible="{Binding CanChangeBackground}">
+                
+                <!-- Background color -->
+                
+                <Label FontFamily="IWantMy" Text="Hintergrund farbe:" FontSize="Medium" BackgroundColor="{Binding BackgroundColor}" TextColor="{Binding TextColor}"/>
+                <cp:ColorPicker   
+                    HeightRequest="200"
+                    ColorFlowDirection="Horizontal" 
+                    ColorSpectrumStyle="ShadeToHueStyle"
+                    PointerRingDiameterUnits="0.7"
+                    PointerRingBorderUnits="0.3"
+                    PickedColor="{Binding PickedBackColor, Mode=TwoWay} " >
+                    <cp:ColorPicker.BaseColorList>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>#f8f8ff</x:String>
+                            <x:String>#7fff00</x:String>
+                            <x:String>#ff00ff</x:String>
+                            <x:String>#0000ff</x:String>
+                            <x:String>#ffff00</x:String>
+                        </x:Array>
+                    </cp:ColorPicker.BaseColorList>
+                    <cp:ColorPicker.Behaviors>
+                        <toolkit:EventToCommandBehavior x:TypeArguments="system:EventArgs" EventName="PickedColorChanged" Command="{Binding PickedBackColorChangedCommand}" />
+                    </cp:ColorPicker.Behaviors>
+                </cp:ColorPicker>
+
+                <!-- Text color -->
+                    
+                <Label FontFamily="IWantMy" Text="Text farbe:" FontSize="Medium" BackgroundColor="{Binding BackgroundColor}" TextColor="{Binding TextColor}"/>
+                <cp:ColorPicker  
+                     HeightRequest="200"
+                     ColorFlowDirection="Horizontal" 
+                     ColorSpectrumStyle="ShadeToHueStyle"
+                     PointerRingDiameterUnits="0.7"
+                     PointerRingBorderUnits="0.3"
+                     PickedColor="{Binding PickedTextColor, Mode=TwoWay} " >
+                    <cp:ColorPicker.BaseColorList>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>#f8f8ff</x:String>
+                            <x:String>#7fff00</x:String>
+                            <x:String>#ff00ff</x:String>
+                            <x:String>#0000ff</x:String>
+                            <x:String>#ffff00</x:String>
+                        </x:Array>
+                    </cp:ColorPicker.BaseColorList>
+                    <cp:ColorPicker.Behaviors>
+                        <toolkit:EventToCommandBehavior x:TypeArguments="system:EventArgs" EventName="PickedColorChanged" Command="{Binding PickedTextColorChangedCommand}" />
+                    </cp:ColorPicker.Behaviors>
+                </cp:ColorPicker>
+                <Button Text="Farben akzeptieren" Command="{Binding AcceptColorCommand}"/>
+            </VerticalStackLayout>
+           
+            
+            
+           
+
+        </VerticalStackLayout>
+    </ScrollView>
+ 
+        <ContentPage.Resources>
+            <Style TargetType="Grid">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal" />
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor"
+                                        Value="Transparent" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </ContentPage.Resources>
+    </ContentPage>

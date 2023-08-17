@@ -1,0 +1,114 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
+		<OutputType>Exe</OutputType>
+		<RootNamespace>AwesomeNotes</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+
+		<!-- Display name -->
+		<ApplicationTitle>AwesomeNotes</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.companyname.awesomenotes</ApplicationId>
+		<ApplicationIdGuid>8fc2c0c4-7f2d-409a-b270-3e74261b98dd</ApplicationIdGuid>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Fonts\AmericandreamsRegular-1Gg2v.otf" />
+	  <None Remove="Resources\Fonts\Aqira-Wyg0n.ttf" />
+	  <None Remove="Resources\Fonts\Badgline-gxKOq.otf" />
+	  <None Remove="Resources\Fonts\BakeryHolland-rgM8B.ttf" />
+	  <None Remove="Resources\Fonts\Banetty-lg1Kw.otf" />
+	  <None Remove="Resources\Fonts\BarbieDoll-p7Yqd.ttf" />
+	  <None Remove="Resources\Fonts\Blanvad-mLdwa.otf" />
+	  <None Remove="Resources\Fonts\ChorneilRegular-7BVJR.otf" />
+	  <None Remove="Resources\Fonts\Cleudia-JRYpj.otf" />
+	  <None Remove="Resources\Fonts\DinoRegular-X3pwg.ttf" />
+	  <None Remove="Resources\Fonts\Doknatle-d9YRE.otf" />
+	  <None Remove="Resources\Fonts\Fortieth-7BarD.ttf" />
+	  <None Remove="Resources\Fonts\FunkyFoodieDoodie-DOlG3.ttf" />
+	  <None Remove="Resources\Fonts\Hagi-MVKOP.otf" />
+	  <None Remove="Resources\Fonts\Haidenisa-rgMdx.otf" />
+	  <None Remove="Resources\Fonts\Hanking-1GgZZ.otf" />
+	  <None Remove="Resources\Fonts\Harima-X3od9.otf" />
+	  <None Remove="Resources\Fonts\Home888-ALVRM.otf" />
+	  <None Remove="Resources\Fonts\Humayra-3z4mp.ttf" />
+	  <None Remove="Resources\Fonts\IWantMyTtr-ALV8p.ttf" />
+	  <None Remove="Resources\Fonts\MadfoolRegular-lgm2V.ttf" />
+	  <None Remove="Resources\Fonts\Malonet-vmWYO.otf" />
+	  <None Remove="Resources\Fonts\NightScreamPersonalUse-OV0xo.otf" />
+	  <None Remove="Resources\Fonts\OnelySans-7BVzl.ttf" />
+	  <None Remove="Resources\Fonts\PamelloGlenstar-GORZP.otf" />
+	  <None Remove="Resources\Fonts\Rampwind-WygP9.otf" />
+	  <None Remove="Resources\Fonts\Robienz-8M94n.ttf" />
+	  <None Remove="Resources\Fonts\ScaryNotesPersonalUse-ZVAxl.otf" />
+	  <None Remove="Resources\Fonts\Shirlock-rgMgy.otf" />
+	  <None Remove="Resources\Fonts\ShortimeSunday-9Ylx5.ttf" />
+	  <None Remove="Resources\Fonts\Signspaintedscript-owLJB.ttf" />
+	  <None Remove="Resources\Fonts\SpicyHotdog-gxVpE.ttf" />
+	  <None Remove="Resources\Fonts\SpicyNachos-BWJqw.ttf" />
+	  <None Remove="Resources\Fonts\SuperHappyDemo-MVKBp.ttf" />
+	  <None Remove="Resources\Fonts\Travesty-K7XmZ.ttf" />
+	  <None Remove="Resources\Fonts\TypoRgbOutlinedemo-Ean9W.otf" />
+	  <None Remove="Resources\Images\color.png" />
+	  <None Remove="Resources\Images\kalendar.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ColorPicker.Maui" Version="1.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="5.3.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Sharpnado.CollectionView.Maui" Version="3.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Pages\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Controls\FlyoutHeaderView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Dictonarys\Converters.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+</Project>
