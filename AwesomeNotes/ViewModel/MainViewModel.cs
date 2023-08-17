@@ -63,7 +63,7 @@ namespace AwesomeNotes.ViewModel
         private void CategorieSelectionChanged(Categorie categorie)
         {
             Notes = categorie.Notes;
-            Categorie.SelectedBorderColor = Colors.YellowGreen;
+            Categorie = categorie;
             foreach (var cat in Categories)
             {
                 if (cat.Name != categorie.Name) 
@@ -110,6 +110,12 @@ namespace AwesomeNotes.ViewModel
         private void DragAndDropEnded()
         {
             provider.GetService<ICategorieService>().SaveOrderedCategories(Categories);
+        }
+
+        [RelayCommand]
+        private void NotesDragAndDropEnded()
+        {
+            provider.GetService<INoteService>().SaveNotes(Notes, Categorie.Name);
         }
         #endregion 
     }
