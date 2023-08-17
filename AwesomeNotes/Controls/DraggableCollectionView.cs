@@ -10,16 +10,11 @@ namespace AwesomeNotes.Controls
 {
     public class DraggableCollectionView : Sharpnado.CollectionView.CollectionView
     {
-        public static readonly BindableProperty SelectedItemProperty =
-            BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(DraggableCollectionView), null, BindingMode.TwoWay);
+        
 
         public static readonly BindableProperty ScrollToItemProperty =
-           BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(DraggableCollectionView), null);
-        public object SelectedItem
-        {
-            get => GetValue(SelectedItemProperty);
-            set => SetValue(SelectedItemProperty, value);
-        }
+           BindableProperty.Create(nameof(ScrollToItem), typeof(object), typeof(DraggableCollectionView), null);
+      
         public object ScrollToItem
         {
             get => GetValue(ScrollToItemProperty);
@@ -36,7 +31,7 @@ namespace AwesomeNotes.Controls
                     int index = 0;
                     foreach (var item in ItemsSource)
                     {
-                        if (object.Equals(item, SelectedItem))
+                        if (object.Equals(item, ScrollToItem))
                         {
                             ScrollTo(index, false);
                             break;
@@ -45,10 +40,7 @@ namespace AwesomeNotes.Controls
                     }
                 }
             }
-            if (propertyName == nameof(SelectedItem))
-            {
-
-            }
+            
         }
       
     }

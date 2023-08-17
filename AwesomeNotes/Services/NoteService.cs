@@ -1,6 +1,8 @@
 ﻿using AwesomeNotes.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,9 +46,10 @@ namespace AwesomeNotes.Services
             throw new NotImplementedException();
         }
 
-        public void SaveNotes(List<Note> notes)
+        public void SaveNotes(ObservableCollection<Note> notes, string categorie)
         {
-            throw new NotImplementedException();
+            var serializedList = JsonConvert.SerializeObject(notes);
+            Preferences.Default.Set(categorie + "_Notes", serializedList);
         }
     }
 }

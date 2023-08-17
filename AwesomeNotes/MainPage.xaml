@@ -49,7 +49,7 @@
                 CollectionLayout="Horizontal"
                 EnableDragAndDrop="True" 
                 DragAndDropTrigger="LongTap"
-                SelectedItem="{Binding Categorie}"                
+                ScrollToItem="{Binding Categorie}"                
                 TapCommand="{Binding CategorieSelectionChangedCommand}"
                 DragAndDropEndedCommand="{Binding DragAndDropEndedCommand}"
                 >
@@ -86,64 +86,80 @@
                                 </Grid.Triggers>
                             </Grid>
                         </sho:DraggableViewCell>
-                      
-                        
+                                             
                     </DataTemplate>
                 </controls:DraggableCollectionView.ItemTemplate>
             </controls:DraggableCollectionView>
             
             <!-- Notes -->
                 
-            <CollectionView 
+            <controls:DraggableCollectionView
                  IsVisible="{Binding CanChangeBackground, Converter={StaticResource BoolInvertedConverter}}" 
                  ItemsSource="{Binding Notes}" 
                  HeightRequest="500" 
+                 ItemHeight="120"
+                 ItemWidth="150"
+                 CollectionPadding="5,20,5,65"
+                 EnableDragAndDrop="True"
+                 DragAndDropTrigger="LongTap"
                  HorizontalOptions="FillAndExpand" 
-                 ItemsLayout="VerticalGrid, 3"
-                 SelectedItem="{Binding Note}"
-                 SelectionChangedCommand="{Binding CategorieSelectionChangedCommand}"
-                 SelectionMode="Single">    
-                <CollectionView.ItemTemplate>
+                 CollectionLayout="Grid"
+                 ColumnCount="3"
+                 ScrollToItem="{Binding Note}"
+                 TapCommand="{Binding CategorieSelectionChangedCommand}"
+                 DragAndDropEndedCommand="{Binding NotesDragAndDropEndedCommand}"
+                 >    
+                <controls:DraggableCollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:Note">
-                        <Grid>
-                            <Border 
-                            WidthRequest="120"
-                                HeightRequest="120"
-                            StrokeShape="RoundRectangle 5, 5, 5, 5"
-                            BackgroundColor="{Binding Background}">
-                                <VerticalStackLayout Spacing="3" Margin="3">
-                                    <Border 
-                                        Stroke="{Binding TextColor}"
-                                        StrokeThickness="2"
-                                        WidthRequest="115"
-                                        StrokeShape="RoundRectangle 5, 5, 0, 0"
-                                        BackgroundColor="{Binding Background}"
-                                        >
-                                        <Label Text="{Binding Title}"
-                                               HorizontalTextAlignment="Center" 
+                        <sho:DraggableViewCell>
+                            <Grid  >
+                                <Border 
+                                    WidthRequest="120"
+                                    HeightRequest="120"
+                                    StrokeShape="RoundRectangle 5, 5, 5, 5"
+                                    BackgroundColor="{Binding Background}">                 
+                                    <VerticalStackLayout Spacing="3" Margin="3">
+                                        <Border 
+                                            Stroke="{Binding TextColor}"
+                                            StrokeThickness="2"
+                                            WidthRequest="115"
+                                            StrokeShape="RoundRectangle 5, 5, 0, 0"
+                                            BackgroundColor="{Binding Background}"
+                                            >
+                                            <Label Text="{Binding Title}"
+                                                HorizontalTextAlignment="Center" 
                                                 VerticalTextAlignment="Center" 
                                                 BackgroundColor="{Binding Background}" 
                                                 TextColor="{Binding TextColor}"  
                                                 FontSize="10" 
-                                                WidthRequest="100"/>                                
-                                    </Border>
-                                    <Label 
-                                         Text="{Binding Text}"                                       
-                                         HorizontalTextAlignment="Start" 
-                                         VerticalTextAlignment="Start" 
-                                         BackgroundColor="{Binding Background}" 
-                                         TextColor="{Binding TextColor}"  
-                                         FontSize="10" 
-                                         WidthRequest="100"/>   
-                                    <!-- beim anklicken soll ein abfrage menü erscheinen Löschen Bearbeiten Teilen Ins Archiev-->
-                                </VerticalStackLayout>
-                                
-                            </Border>
-                        </Grid>
+                                                WidthRequest="100"/>                
+                                        </Border>
+                                        <Label 
+                                             Text="{Binding Text}"                                       
+                                             HorizontalTextAlignment="Start" 
+                                             VerticalTextAlignment="Start" 
+                                             BackgroundColor="{Binding Background}" 
+                                             TextColor="{Binding TextColor}"  
+                                             FontSize="10" 
+                                             WidthRequest="100"/>                       
+                                        <!-- beim anklicken soll ein abfrage menü erscheinen Löschen Bearbeiten Teilen Ins Archiev-->
+                                    </VerticalStackLayout>
 
+                                </Border>
+                                <Grid.Triggers>
+                                    <DataTrigger
+                                         Binding="{Binding Source={x:Reference DraggableViewCell}, Path=IsDragAndDropping}"
+                                         TargetType="Grid"
+                                         Value="True">                      
+                                        <Setter Property="Opacity"  Value="0.5" />
+                                    </DataTrigger>
+                                </Grid.Triggers>
+                            </Grid>
+                        </sho:DraggableViewCell>
+                          
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                </controls:DraggableCollectionView.ItemTemplate>
+            </controls:DraggableCollectionView>
             <VerticalStackLayout Spacing="20" IsVisible="{Binding CanChangeBackground}">
                 
                 <!-- Background color -->
