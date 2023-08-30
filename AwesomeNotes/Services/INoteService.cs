@@ -10,9 +10,12 @@ namespace AwesomeNotes.Services
 {
     public interface INoteService
     {
-        Note GetNote(int id);
-        void SaveNotes(ObservableCollection<Note> notes, string categorie);
-        void SaveNote(Note note);
+        event EventHandler FormattedPropertyChanged;
+        void UpdateFormattedText();
+
+        Note GetCurrentNote();
+        void SaveNotes(Categorie categorie);
+        void SaveCurrentNote(Note note);
         void GetMedia();
         void DeleteMedia();
         void ChangeBackgroundImage();

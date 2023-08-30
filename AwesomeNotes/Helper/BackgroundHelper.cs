@@ -8,6 +8,11 @@ namespace AwesomeNotes.Helper
 {
     public static class BackgroundHelper
     {
+        public static Color CurrentBackGround { get; set;}
+        public static Color CurrentTextColor { get; set;}   
+        public static Color NoteBackGround { get; set;}
+        public static Color NoteTextColor { get; set;}
+
         public static void SaveBackgroundColor(Color backColor)
         {
             Preferences.Default.Set("Background21", backColor.ToHex().ToString());

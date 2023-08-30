@@ -4,4 +4,6 @@
              xmlns:converter="clr-namespace:AwesomeNotes.Converter"
              x:Class="AwesomeNotes.Resources.Dictonarys.Converters">
     <converter:BoolInvertedConverter x:Key="BoolInvertedConverter" />
+    <converter:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+    <converter:EnumToBoolInverted x:Key="EnumToBoolInverted" />
 </ResourceDictionary>
