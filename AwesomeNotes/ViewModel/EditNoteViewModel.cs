@@ -33,7 +33,6 @@ namespace AwesomeNotes.ViewModel
             this.EditMode = EeditMode.None;
             this.FormattedText = Note.Text;
             this.EditorText = Note.Text;
-            //this.IsNone = true;
         }
 
         private void UpdateCategorie()
@@ -98,7 +97,7 @@ namespace AwesomeNotes.ViewModel
             CanSetHtmlText = true;
             Note.Text = FormattedText;
             UpdateCategorie();
-            //als letzte Kategorie speichern und ein event auslösen 
+            
             provider.GetService<ICategorieService>().UpdateNotesForCategorie(categorie);
             await ShellNavigation.GoToPageAsync("MainPage");
         }
@@ -111,15 +110,13 @@ namespace AwesomeNotes.ViewModel
         [RelayCommand]
         private void ChnageFontAttributes()
         {
-            EditMode = EeditMode.FontAttributes;
-           
+            EditMode = EeditMode.FontAttributes;         
         }
 
         [RelayCommand]
         private void AcceptAttributes()
         {
             EditMode = EeditMode.None;
-            //provider.GetService<INoteService>().UpdateFormattedText();
         }
 
 
