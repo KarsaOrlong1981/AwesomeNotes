@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AwesomeNotes.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -31,12 +32,24 @@ namespace AwesomeNotes.Controls
                     int index = 0;
                     foreach (var item in ItemsSource)
                     {
-                        if (object.Equals(item, ScrollToItem))
+                        if (item is Categorie)
                         {
-                            ScrollTo(index, false);
-                            break;
+                            if (object.Equals((item as Categorie).Name, (ScrollToItem as Categorie).Name))
+                            {
+                                ScrollTo(index, false);
+                                break;
+                            }
+                            index++;
+                        }      
+                        if (item is Note)
+                        {
+                            if (object.Equals((item as Note).Id, (ScrollToItem as Note).Id))
+                            {
+                                ScrollTo(index, false);
+                                break;
+                            }
+                            index++;
                         }
-                        index++;
                     }
                 }
             }

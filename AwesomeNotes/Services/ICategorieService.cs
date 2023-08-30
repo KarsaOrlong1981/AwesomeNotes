@@ -10,9 +10,12 @@ namespace AwesomeNotes.Services
 {
     public interface ICategorieService
     {
-        ObservableCollection<Categorie> CategorieList { get; set; }  
+        event EventHandler UpdateCategoriesEvent;
+        ObservableCollection<Categorie> CategorieList { get; set; }
+        void UpdateNotesForCategorie(Categorie categorie);  
         void SaveCategories(ObservableCollection<Categorie> categories);
         void DeleteCategories();
+        Categorie GetCategorieByName(string name);
         void SaveCategorie(Categorie categorie);
         void DeleteCategorie(Categorie categorie);
         void SaveOrderedCategories(ObservableCollection<Categorie> categories);

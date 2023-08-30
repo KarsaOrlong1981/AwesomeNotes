@@ -3,12 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AwesomeNotes.MainPage"
              xmlns:vm="clr-namespace:AwesomeNotes.ViewModel"
+             xmlns:local="clr-namespace:AwesomeNotes"
              xmlns:controls="clr-namespace:AwesomeNotes.Controls"
              xmlns:cp="https://trungnt2910.github.io/schemas/maui/2022/colorpicker" 
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:model="clr-namespace:AwesomeNotes.Model"
              xmlns:sho="http://sharpnado.com"
+             x:Name="mainPage"
              Background="{Binding BackgroundColor}" Shell.BackgroundColor="{Binding BackgroundColor}" x:DataType="vm:MainViewModel" >
   
     <Shell.TitleView>
@@ -32,69 +34,89 @@
             <ImageButton Grid.Column="2" Source="kalendar.png" WidthRequest="35" HeightRequest="35" VerticalOptions="Center" Command="{Binding OpenCalendarCommand}"/>
         </Grid>
     </Shell.TitleView>
-    <ScrollView>
+    <Grid>
         <VerticalStackLayout
             Spacing="25" Padding="10">
-            
+            <VerticalStackLayout  IsVisible="{Binding CanChangeBackground, Converter={StaticResource BoolInvertedConverter}}" >
+                
+           
             <!-- Catgories -->
-            
-            <controls:DraggableCollectionView
-                IsVisible="{Binding CanChangeBackground, Converter={StaticResource BoolInvertedConverter}}" 
-                ItemsSource="{Binding Categories}" 
-                HeightRequest="55" 
-                ItemHeight="55"
-                ItemWidth="120"
-                ItemSpacing="10"
-                HorizontalOptions="FillAndExpand" 
-                CollectionLayout="Horizontal"
-                EnableDragAndDrop="True" 
-                DragAndDropTrigger="LongTap"
-                ScrollToItem="{Binding Categorie}"                
-                TapCommand="{Binding CategorieSelectionChangedCommand}"
-                DragAndDropEndedCommand="{Binding DragAndDropEndedCommand}"
-                >
-                <controls:DraggableCollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:Categorie">
-                        <sho:DraggableViewCell>
-                            <Grid>
-                                <Border 
-    
-                                      Stroke="{Binding TextColor}"
-                                      StrokeThickness="3"
-                                      WidthRequest="115"
-                                      StrokeShape="RoundRectangle 20, 20, 20, 20"
-                                      BackgroundColor="{Binding BackgroundColor}">
-                                        <Label 
-                                           Text="{Binding Name}" 
-                                           HorizontalOptions="Center" 
-                                           VerticalOptions="Center"  
-                                           HorizontalTextAlignment="Center" 
-                                           VerticalTextAlignment="Center" 
-                                           BackgroundColor="{Binding BackgroundColor}" 
-                                           TextColor="{Binding TextColor}"  
-                                           FontSize="10" 
-                                           WidthRequest="100"/>             
-                                    </Border>
-                                                                    
-                                <Grid.Triggers>
-                                    <DataTrigger
-                                    Binding="{Binding Source={x:Reference DraggableViewCell}, Path=IsDragAndDropping}"
-                                    TargetType="Grid"
-                                    Value="True">
-                                        <Setter Property="Opacity"  Value="0.5" />
-                                    </DataTrigger>
-                                </Grid.Triggers>
-                            </Grid>
-                        </sho:DraggableViewCell>
-                                             
-                    </DataTemplate>
-                </controls:DraggableCollectionView.ItemTemplate>
-            </controls:DraggableCollectionView>
+                <Border HeightRequest="70"
+                        BackgroundColor="{Binding BackgroundColor}"
+                        Stroke="{Binding TextColor}"
+                        StrokeThickness="3">
+                    <controls:DraggableCollectionView
+                             Margin="5"
+                             VerticalOptions="CenterAndExpand" 
+                             ItemsSource="{Binding Categories}" 
+                             ItemHeight="50"
+                             ItemWidth="130"
+                             ItemSpacing="10"
+                             HorizontalOptions="Center" 
+                             CollectionLayout="Horizontal"
+                             EnableDragAndDrop="True" 
+                             DragAndDropTrigger="LongTap"
+                             ScrollToItem="{Binding Categorie}"                
+                             TapCommand="{Binding CategorieSelectionChangedCommand}"
+                             DragAndDropEndedCommand="{Binding DragAndDropEndedCommand}"
+                             >                  
+                        <controls:DraggableCollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Categorie">
+                                <sho:DraggableViewCell>
+                                    <Grid>
+                                        <Border  
+                          Style="{StaticResource SelectedBorderStyle}"
+                          Stroke="{Binding TextColor}"
+                          StrokeThickness="3"
+                          WidthRequest="125"
+                          StrokeShape="RoundRectangle 20, 20, 20, 20"
+                          BackgroundColor="{Binding BackgroundColor}">
+                                            <HorizontalStackLayout HorizontalOptions="Center" >
+                                                <Label 
+                                  Text="{Binding Name}" 
+                                  HorizontalOptions="Center" 
+                                  VerticalOptions="Center"  
+                                  HorizontalTextAlignment="Center" 
+                                  VerticalTextAlignment="Center" 
+                                  BackgroundColor="{Binding BackgroundColor, Mode=TwoWay}" 
+                                  TextColor="{Binding TextColor}"  
+                                  FontSize="10" 
+                                  WidthRequest="80"/>
+                                                <Label 
+                                  IsVisible="{Binding IsSelected}"
+                                  Text="*" 
+                                  HorizontalOptions="Start" 
+                                  VerticalOptions="Center"  
+                                  HorizontalTextAlignment="Center" 
+                                  VerticalTextAlignment="Center" 
+                                  BackgroundColor="{Binding BackgroundColor, Mode=TwoWay}" 
+                                  TextColor="{Binding TextColor}"  
+                                  FontSize="12" 
+                                  WidthRequest="5"/>
+                                            </HorizontalStackLayout>
+
+                                        </Border>
+                                        <Grid.Triggers>
+                                            <DataTrigger
+                                 Binding="{Binding Source={x:Reference DraggableViewCell}, Path=IsDragAndDropping}"
+                                 TargetType="Grid"
+                                 Value="True">
+                                                <Setter Property="Opacity"  Value="0.5" />
+                                            </DataTrigger>
+                                        </Grid.Triggers>
+                                    </Grid>
+                                </sho:DraggableViewCell>
+
+                            </DataTemplate>
+                        </controls:DraggableCollectionView.ItemTemplate>
+                    </controls:DraggableCollectionView>
+                </Border>
+           
             
             <!-- Notes -->
                 
             <controls:DraggableCollectionView
-                 IsVisible="{Binding CanChangeBackground, Converter={StaticResource BoolInvertedConverter}}" 
+                
                  ItemsSource="{Binding Notes}" 
                  HeightRequest="500" 
                  ItemHeight="120"
@@ -106,7 +128,7 @@
                  CollectionLayout="Grid"
                  ColumnCount="3"
                  ScrollToItem="{Binding Note}"
-                 TapCommand="{Binding CategorieSelectionChangedCommand}"
+                 TapCommand="{Binding NotesSelectionChangedCommand}"
                  DragAndDropEndedCommand="{Binding NotesDragAndDropEndedCommand}"
                  >    
                 <controls:DraggableCollectionView.ItemTemplate>
@@ -118,7 +140,12 @@
                                     HeightRequest="120"
                                     StrokeShape="RoundRectangle 5, 5, 5, 5"
                                     BackgroundColor="{Binding Background}">                 
-                                    <VerticalStackLayout Spacing="3" Margin="3">
+                                    <Grid Margin="3">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="20"/>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="30" />
+                                            </Grid.RowDefinitions>
                                         <Border 
                                             Stroke="{Binding TextColor}"
                                             StrokeThickness="2"
@@ -131,19 +158,31 @@
                                                 VerticalTextAlignment="Center" 
                                                 BackgroundColor="{Binding Background}" 
                                                 TextColor="{Binding TextColor}"  
+                                                FontFamily="{Binding FontFamily}"
                                                 FontSize="10" 
                                                 WidthRequest="100"/>                
                                         </Border>
                                         <Label 
+                                             Grid.Row="1"
+                                             TextType="Html"
                                              Text="{Binding Text}"                                       
                                              HorizontalTextAlignment="Start" 
                                              VerticalTextAlignment="Start" 
                                              BackgroundColor="{Binding Background}" 
                                              TextColor="{Binding TextColor}"  
+                                             FontFamily="{Binding FontFamily}"
                                              FontSize="10" 
-                                             WidthRequest="100"/>                       
-                                        <!-- beim anklicken soll ein abfrage menü erscheinen Löschen Bearbeiten Teilen Ins Archiev-->
-                                    </VerticalStackLayout>
+                                             WidthRequest="100"/>
+                                            <ImageButton Grid.Row="2" 
+                                                         VerticalOptions="EndAndExpand" 
+                                                         HorizontalOptions="EndAndExpand" 
+                                                         Source="delete.png" 
+                                                         HeightRequest="30"
+                                                         WidthRequest="30"
+                                                         Command="{Binding Path=BindingContext.DeleteNoteCommand, Source={x:Reference mainPage}}"
+                                                         CommandParameter="{Binding .}"/>
+                                            <!-- beim anklicken soll ein abfrage menü erscheinen Löschen Bearbeiten Teilen Ins Archiev-->
+                                    </Grid>
 
                                 </Border>
                                 <Grid.Triggers>
@@ -160,80 +199,41 @@
                     </DataTemplate>
                 </controls:DraggableCollectionView.ItemTemplate>
             </controls:DraggableCollectionView>
-            <VerticalStackLayout Spacing="20" IsVisible="{Binding CanChangeBackground}">
                 
-                <!-- Background color -->
-                
-                <Label FontFamily="IWantMy" Text="Hintergrund farbe:" FontSize="Medium" BackgroundColor="{Binding BackgroundColor}" TextColor="{Binding TextColor}"/>
-                <cp:ColorPicker   
-                    HeightRequest="200"
-                    ColorFlowDirection="Horizontal" 
-                    ColorSpectrumStyle="ShadeToHueStyle"
-                    PointerRingDiameterUnits="0.7"
-                    PointerRingBorderUnits="0.3"
-                    PickedColor="{Binding PickedBackColor, Mode=TwoWay} " >
-                    <cp:ColorPicker.BaseColorList>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>#f8f8ff</x:String>
-                            <x:String>#7fff00</x:String>
-                            <x:String>#ff00ff</x:String>
-                            <x:String>#0000ff</x:String>
-                            <x:String>#ffff00</x:String>
-                        </x:Array>
-                    </cp:ColorPicker.BaseColorList>
-                    <cp:ColorPicker.Behaviors>
-                        <toolkit:EventToCommandBehavior x:TypeArguments="system:EventArgs" EventName="PickedColorChanged" Command="{Binding PickedBackColorChangedCommand}" />
-                    </cp:ColorPicker.Behaviors>
-                </cp:ColorPicker>
-
-                <!-- Text color -->
-                    
-                <Label FontFamily="IWantMy" Text="Text farbe:" FontSize="Medium" BackgroundColor="{Binding BackgroundColor}" TextColor="{Binding TextColor}"/>
-                <cp:ColorPicker  
-                     HeightRequest="200"
-                     ColorFlowDirection="Horizontal" 
-                     ColorSpectrumStyle="ShadeToHueStyle"
-                     PointerRingDiameterUnits="0.7"
-                     PointerRingBorderUnits="0.3"
-                     PickedColor="{Binding PickedTextColor, Mode=TwoWay} " >
-                    <cp:ColorPicker.BaseColorList>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>#f8f8ff</x:String>
-                            <x:String>#7fff00</x:String>
-                            <x:String>#ff00ff</x:String>
-                            <x:String>#0000ff</x:String>
-                            <x:String>#ffff00</x:String>
-                        </x:Array>
-                    </cp:ColorPicker.BaseColorList>
-                    <cp:ColorPicker.Behaviors>
-                        <toolkit:EventToCommandBehavior x:TypeArguments="system:EventArgs" EventName="PickedColorChanged" Command="{Binding PickedTextColorChangedCommand}" />
-                    </cp:ColorPicker.Behaviors>
-                </cp:ColorPicker>
-                <Button Text="Farben akzeptieren" Command="{Binding AcceptColorCommand}"/>
+                <Border Stroke="{Binding TextColor}"
+                        HorizontalOptions="EndAndExpand"
+                        StrokeThickness="8"
+                        WidthRequest="80"
+                        HeightRequest="80"
+                        BackgroundColor="{Binding BackgroundColor}"
+                        StrokeShape="RoundRectangle 100, 100, 100, 100"
+                        Margin="0, 50, 5, 0" >
+                    <Label FontFamily="Doknatle" 
+                           Text="+" 
+                           Margin="0,-17,3,0"
+                           TextColor="{Binding TextColor}"
+                           BackgroundColor="{Binding BackgroundColor}"
+                           FontSize="70"
+                          
+                           FontAttributes="Bold" 
+                           HorizontalTextAlignment="Center" 
+                           VerticalTextAlignment="Center"/>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AddNoteCommand}"/>
+                    </Border.GestureRecognizers>
+                </Border>
             </VerticalStackLayout>
-           
-            
-            
-           
-
+            <controls:CustomColorPickerControl 
+                IsVisible="{Binding CanChangeBackground}"
+                BackgroundColor="{Binding BackgroundColor}"
+                TextColor="{Binding TextColor}" 
+                PickedBackColor="{Binding PickedBackColor}"
+                PickedTextColor="{Binding PickedTextColor}" 
+                PickedBackColorChangedCommand="{Binding PickedBackColorChangedCommand}"
+                PickedTextColorChangedCommand="{Binding PickedTextColorChangedCommand}"
+                Command="{Binding AcceptColorCommand}"/>
+                    
         </VerticalStackLayout>
-    </ScrollView>
+    </Grid>
  
-        <ContentPage.Resources>
-            <Style TargetType="Grid">
-                <Setter Property="VisualStateManager.VisualStateGroups">
-                    <VisualStateGroupList>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal" />
-                            <VisualState x:Name="Selected">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor"
-                                        Value="Transparent" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateGroupList>
-                </Setter>
-            </Style>
-        </ContentPage.Resources>
     </ContentPage>

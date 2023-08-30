@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AwesomeNotes.Pages.EditNotePage"
+             xmlns:vm="clr-namespace:AwesomeNotes.ViewModel"
+             xmlns:controls="clr-namespace:AwesomeNotes.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:richTextEditor="clr-namespace:RichTextEditor;assembly=FormattableTextEditor" 
+             x:DataType="vm:EditNoteViewModel"
+             BackgroundColor="{Binding BackgroundColor}"
+             Title="CreateNotePage">
+    <Shell.TitleView>
+        <Grid BackgroundColor="{Binding BackgroundColor}" VerticalOptions="Fill" HorizontalOptions="FillAndExpand" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label 
+            Text="Awesome Notes" 
+            FontFamily="IWantMy" 
+            TextColor="{Binding TextColor}" 
+            HeightRequest="50" 
+            BackgroundColor="{Binding BackgroundColor}"
+            VerticalTextAlignment="Center" 
+            VerticalOptions="CenterAndExpand"
+            FontSize="Large"
+            HorizontalTextAlignment="Center"/>
+            <!--<ImageButton Grid.Column="1" Source="color.png" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" Command="{Binding ChangeBackgroundCommand}" />
+            <ImageButton Grid.Column="2" Source="kalendar.png" WidthRequest="35" HeightRequest="35" VerticalOptions="Center" Command="{Binding OpenCalendarCommand}"/>-->
+        </Grid>
+    </Shell.TitleView>
+    <ScrollView>
+        
+   
+    <VerticalStackLayout>
+        <Border Margin="8" 
+                BackgroundColor="{Binding Note.Background}"
+                Stroke="{Binding Note.TextColor}"
+                StrokeThickness="4"
+                HeightRequest="600">
+            <VerticalStackLayout Padding="4" Spacing="20" BackgroundColor="{Binding Note.Background}">
+                <Border Margin="4"
+               Stroke="{Binding Note.TextColor}"
+               StrokeThickness="3"
+               HeightRequest="70"
+               StrokeShape="RoundRectangle 5, 5, 0, 0"
+               BackgroundColor="{Binding Note.Background}"
+               >
+                    <Entry 
+                        Text="{Binding Note.Title}"
+                        FontFamily="{Binding Note.FontFamily}"
+                 HorizontalTextAlignment="Center" 
+                 VerticalTextAlignment="Center" 
+                 BackgroundColor="{Binding Note.Background}" 
+                 TextColor="{Binding Note.TextColor}"  
+                 FontSize="25" 
+                 HeightRequest="60"
+                   />
+                </Border>
+                    <Grid HeightRequest="300" BackgroundColor="{Binding Note.Background}">
+                        <richTextEditor:HtmlEditor Text="{Binding EditorText}"
+                                                   FormattedText="{Binding FormattedText}" 
+                                                   CanSetHtmlText="{Binding CanSetHtmlText}"
+                                                   FontSize="{Binding Note.FontSize}"
+                                                   Keyboard="Text"
+                                                   IsSpellCheckEnabled="False"
+                                                   TextColor="{Binding Note.TextColor}"
+                                                   FontFamily="{Binding Note.FontFamily}"
+                                                   Margin="4"
+                                                   BackgroundColor="{Binding Note.Background}"/>
+
+                    </Grid>
+                <!--Platzhalter Medien bilder-->
+                <HorizontalStackLayout HorizontalOptions="CenterAndExpand" >
+                    <!-- Hier muss eine Horizontale Collection view hin wo man alle bilder durchsrcollen kann, beim klick auf das Bild soll eine Vollbild ansicht angezeigt werden. -->
+                    <Image Source="marvime.jpg" Aspect="AspectFit" HeightRequest="150" WidthRequest="150"/>
+                    <Image Source="lio.jpg" Aspect="AspectFit" HeightRequest="150" WidthRequest="150"/>
+     
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+         <!-- Auswahl möglichkeiten -->
+        <HorizontalStackLayout Spacing="10" 
+                               Padding="8" 
+                               IsVisible="{Binding EditMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=None}" 
+                               HorizontalOptions="Center" >
+                <ImageButton HeightRequest="50" WidthRequest="50" Source="font.png" 
+                         CornerRadius="5" BorderColor="Black" BorderWidth="5" BackgroundColor="White" Aspect="AspectFit" Command="{Binding ChangeFontFamilyCommand}" />
+                <ImageButton HeightRequest="50" WidthRequest="50" Source="fontSize.png"
+                         CornerRadius="5" BorderColor="Black" BorderWidth="5" BackgroundColor="White" Aspect="AspectFit" Command="{Binding ChangeFontSizeCommand}"/>
+                <ImageButton HeightRequest="50" WidthRequest="50" Source="attributes.png"
+                         CornerRadius="5" BorderColor="Black" BorderWidth="5" BackgroundColor="White" Aspect="AspectFit" Command="{Binding ChnageFontAttributesCommand}" />
+                <ImageButton HeightRequest="50" WidthRequest="50" Source="paint.png"
+                         CornerRadius="5" BorderColor="Black" BorderWidth="5" BackgroundColor="White" Aspect="AspectFit" />
+
+            </HorizontalStackLayout>
+            <!-- Font Family -->
+            <CollectionView IsVisible="{Binding EditMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=FontFamily}" 
+                            ItemsSource="{Binding FontNames}" 
+                            SelectionMode="Single" 
+                            ItemsLayout="HorizontalList"
+                            HeightRequest="50" 
+                            SelectedItem="{Binding Font}" 
+                            SelectionChangedCommand="{Binding FontFamilyChangedCommand}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="{Binding TextColor}" WidthRequest="150" HeightRequest="45" BackgroundColor="{Binding BackgroundColor}" StrokeThickness="2" StrokeShape="RoundRectangle 20,20,20,20">
+                            <Label Text="Awsome" FontFamily="{Binding .}" TextColor="Blue" FontSize="25" BackgroundColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <!-- FontSize -->
+            <controls:NumericUpDownControl IsVisible="{Binding EditMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=FontSize}"
+                                           HeightRequest="50"
+                                           WidthRequest="200"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           ImageHeight="30"
+                                           ImageWidth="30"
+                                           UpButtonImageSource="up.png"
+                                           DownButtonImageSource="down.png"
+                                           AcceptButtonImageSource="accept.gif"
+                                           TextColor="Blue" 
+                                           BackgroundColor="White"
+                                           CurrentValueChangedCommand="{Binding FontSizeChangedCommand}"
+                                           AcceptChangesCommand="{Binding FontSizeFinishedCommand}"
+                                           CurrentValue="{Binding FontSize}"
+                                           />
+            <!-- Font Attributes -->
+            <Border IsVisible="{Binding EditMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=FontAttributes}" >
+                <richTextEditor:StyleBar Padding="8" HorizontalOptions="Center"/>
+            </Border>
+            <!-- Accept edit button -->
+            <Button Margin="8" Text="Änderungen bestätigen" FontSize="Medium" Command="{Binding AcceptChangesCommand}" FontAttributes="Bold" BorderColor="{Binding TextColor}" BorderWidth="4" BackgroundColor="{Binding BackgroundColor}" TextColor="{Binding TextColor}"/>
+    </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

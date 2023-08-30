@@ -1,5 +1,6 @@
 ﻿using AwesomeNotes.Helper;
 using AwesomeNotes.Model;
+using AwesomeNotes.Navigation;
 using AwesomeNotes.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -19,14 +20,46 @@ namespace AwesomeNotes.ViewModel
         public MainViewModel(IServiceProvider provider)
         {
             this.provider = provider;
+            ServiceHelper.ServiceProvider = provider;
             BackgroundColor = BackgroundHelper.GetBackgroundColor();
             PickedBackColor = BackgroundColor;
+            BackgroundHelper.CurrentBackGround = BackgroundColor;
             TextColor = BackgroundHelper.GetTextColor();
             PickedTextColor = TextColor;
+            BackgroundHelper.CurrentTextColor = TextColor;
             Categorie = provider.GetService<ICategorieService>().GetCategorie();
             Notes = Categorie.Notes;
             Categories = provider.GetService<ICategorieService>().GetCategories();
+            UpdateCategorie();
+            provider.GetService<ICategorieService>().UpdateCategoriesEvent += MainViewModel_UpdateCategoriesEvent;
         }
+
+        private void UpdateCategorie()
+        {           
+            foreach (var item in Categories)
+            {
+                if (item.Name == Categorie.Name)
+                {
+                    item.IsSelected = true;
+                    provider.GetService<ICategorieService>().SaveCategorie(item);
+                }
+                else
+                    item.IsSelected = false;
+
+                item.TextColor = TextColor;
+                item.BackgroundColor = BackgroundColor;
+            }
+
+            OnPropertyChanged(nameof(Categorie));
+        }
+
+        private void MainViewModel_UpdateCategoriesEvent(object sender, EventArgs e)
+        {
+            Categories = provider.GetService<ICategorieService>().GetCategories();
+            Categorie = provider.GetService<ICategorieService>().GetCategorie();
+            UpdateChangeCategorie(Categorie);
+        }
+
         #region Propertys
         [ObservableProperty]
         private ObservableCollection<Note> notes;
@@ -62,18 +95,47 @@ namespace AwesomeNotes.ViewModel
         [RelayCommand]
         private void CategorieSelectionChanged(Categorie categorie)
         {
-            Notes = categorie.Notes;
-            Categorie = categorie;
-            foreach (var cat in Categories)
-            {
-                if (cat.Name != categorie.Name) 
-                {
-                    cat.SelectedBorderColor = Colors.Transparent;
-                }
-            }
+            UpdateChangeCategorie(categorie);
             provider.GetService<ICategorieService>().SaveCategorie(categorie);
+
         }
 
+        private void UpdateChangeCategorie(Categorie categorie)
+        {
+            Notes = provider.GetService<ICategorieService>().GetCategorieByName(categorie.Name).Notes;
+            Categorie = categorie;
+            Categorie.IsSelected = true;
+            foreach (var cat in Categories)
+            {
+                if (cat.Name != categorie.Name)
+                {
+                    cat.IsSelected = false;
+                }
+                else
+                    cat.IsSelected = true;
+                cat.BackgroundColor = BackgroundHelper.CurrentBackGround;
+                cat.TextColor = BackgroundHelper.CurrentTextColor;
+            }
+            OnPropertyChanged(nameof(Categorie));
+        }
+
+        [RelayCommand]
+        private async Task NotesSelectionChanged(Note note) 
+        {
+            Note = note;
+            provider.GetService<INoteService>().SaveCurrentNote(note);
+            //BackgroundHelper.CurrentBackGround = BackgroundColor;
+            //BackgroundHelper.CurrentTextColor = TextColor;
+            await ShellNavigation.GoToDetailAsync("EditNotePage");
+            //var action =  await Application.Current.MainPage.DisplayActionSheet(note.Title, "Abbrechen", "", "Lesen/Bearbeiten", "Löschen");
+            
+        }
+        [RelayCommand]
+        private void DeleteNote(Note note)
+        {
+           
+        }
+       
         [RelayCommand] 
         private void ChangeBackground()
         {
@@ -89,13 +151,17 @@ namespace AwesomeNotes.ViewModel
         [RelayCommand]
         private void PickedBackColorChanged()
         {
-            BackgroundColor = PickedBackColor;            
+            BackgroundColor = PickedBackColor;   
+            BackgroundHelper.CurrentBackGround = BackgroundColor;
+          
         }
 
         [RelayCommand]
         private void PickedTextColorChanged()   
         {
             TextColor = PickedTextColor;
+            BackgroundHelper.CurrentTextColor = TextColor;
+           
         }
 
         [RelayCommand]  
@@ -104,8 +170,19 @@ namespace AwesomeNotes.ViewModel
             CanChangeBackground = false;
             BackgroundHelper.SaveBackgroundColor(BackgroundColor);
             BackgroundHelper.SaveTextColor(TextColor);
+           
+            foreach (var cat in Categories)
+            {
+                cat.BackgroundColor = BackgroundHelper.CurrentBackGround;
+                cat.TextColor = BackgroundHelper.CurrentTextColor;
+            }
+            
         }
-
+        [RelayCommand]
+        private async Task AddNote()
+        {
+            await ShellNavigation.GoToDetailAsync("AddNotePage");
+        }
         [RelayCommand]
         private void DragAndDropEnded()
         {
@@ -115,7 +192,8 @@ namespace AwesomeNotes.ViewModel
         [RelayCommand]
         private void NotesDragAndDropEnded()
         {
-            provider.GetService<INoteService>().SaveNotes(Notes, Categorie.Name);
+            Categorie.Notes = Notes;
+            provider.GetService<INoteService>().SaveNotes(Categorie);
         }
         #endregion 
     }

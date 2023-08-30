@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AwesomeNotes.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,8 @@ namespace AwesomeNotes.Navigation
         private static void GetRoutes()
         {
 
-            //Routes.Add("overview", typeof(MultiplicationTablesOverviewPage));
+            Routes.Add("EditNotePage", typeof(EditNotePage));
+            Routes.Add("AddNotePage", typeof(AddNotePage));
             //Routes.Add("smallview", typeof(SmallMultiplicationTablesPage));
             //Routes.Add("easytaskview", typeof(EasyTaskPage));
             //Routes.Add("advandcedtaskview", typeof(AdvandcedTaskPage));

@@ -11,6 +11,8 @@ namespace AwesomeNotes.Services
 {
     public class NoteService : INoteService
     {
+        public event EventHandler FormattedPropertyChanged;
+
         public void ChangeBackgroundColor()
         {
             throw new NotImplementedException();
@@ -36,20 +38,32 @@ namespace AwesomeNotes.Services
             throw new NotImplementedException();
         }
 
-        public Note GetNote(int id)
+        public Note GetCurrentNote()
         {
-            throw new NotImplementedException();
+            Note note = null;
+            if (Preferences.Default.ContainsKey("CurrentNote123456"))
+            {
+                var deserializedNote = Preferences.Default.Get("CurrentNote123456", string.Empty);
+                note = JsonConvert.DeserializeObject<Note>(deserializedNote);
+            }
+            return note;
         }
 
-        public void SaveNote(Note note)
+        public void SaveCurrentNote(Note note)
         {
-            throw new NotImplementedException();
+            var serializedNote = JsonConvert.SerializeObject(note);
+            Preferences.Default.Set("CurrentNote123456", serializedNote);
         }
 
-        public void SaveNotes(ObservableCollection<Note> notes, string categorie)
+        public void SaveNotes(Categorie categorie)
         {
-            var serializedList = JsonConvert.SerializeObject(notes);
-            Preferences.Default.Set(categorie + "_Notes", serializedList);
+            var serializedList = JsonConvert.SerializeObject(categorie);
+            Preferences.Default.Set(categorie.Name + "_Note1234567", serializedList);
+        }
+
+        public void UpdateFormattedText()
+        {
+            FormattedPropertyChanged?.Invoke(this,EventArgs.Empty);
         }
     }
 }

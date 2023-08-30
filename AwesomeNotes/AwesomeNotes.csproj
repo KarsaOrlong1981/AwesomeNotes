@@ -49,44 +49,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Fonts\AmericandreamsRegular-1Gg2v.otf" />
-	  <None Remove="Resources\Fonts\Aqira-Wyg0n.ttf" />
-	  <None Remove="Resources\Fonts\Badgline-gxKOq.otf" />
-	  <None Remove="Resources\Fonts\BakeryHolland-rgM8B.ttf" />
-	  <None Remove="Resources\Fonts\Banetty-lg1Kw.otf" />
-	  <None Remove="Resources\Fonts\BarbieDoll-p7Yqd.ttf" />
-	  <None Remove="Resources\Fonts\Blanvad-mLdwa.otf" />
-	  <None Remove="Resources\Fonts\ChorneilRegular-7BVJR.otf" />
-	  <None Remove="Resources\Fonts\Cleudia-JRYpj.otf" />
-	  <None Remove="Resources\Fonts\DinoRegular-X3pwg.ttf" />
-	  <None Remove="Resources\Fonts\Doknatle-d9YRE.otf" />
-	  <None Remove="Resources\Fonts\Fortieth-7BarD.ttf" />
-	  <None Remove="Resources\Fonts\FunkyFoodieDoodie-DOlG3.ttf" />
-	  <None Remove="Resources\Fonts\Hagi-MVKOP.otf" />
-	  <None Remove="Resources\Fonts\Haidenisa-rgMdx.otf" />
-	  <None Remove="Resources\Fonts\Hanking-1GgZZ.otf" />
-	  <None Remove="Resources\Fonts\Harima-X3od9.otf" />
-	  <None Remove="Resources\Fonts\Home888-ALVRM.otf" />
-	  <None Remove="Resources\Fonts\Humayra-3z4mp.ttf" />
-	  <None Remove="Resources\Fonts\IWantMyTtr-ALV8p.ttf" />
-	  <None Remove="Resources\Fonts\MadfoolRegular-lgm2V.ttf" />
-	  <None Remove="Resources\Fonts\Malonet-vmWYO.otf" />
-	  <None Remove="Resources\Fonts\NightScreamPersonalUse-OV0xo.otf" />
-	  <None Remove="Resources\Fonts\OnelySans-7BVzl.ttf" />
-	  <None Remove="Resources\Fonts\PamelloGlenstar-GORZP.otf" />
-	  <None Remove="Resources\Fonts\Rampwind-WygP9.otf" />
-	  <None Remove="Resources\Fonts\Robienz-8M94n.ttf" />
-	  <None Remove="Resources\Fonts\ScaryNotesPersonalUse-ZVAxl.otf" />
-	  <None Remove="Resources\Fonts\Shirlock-rgMgy.otf" />
-	  <None Remove="Resources\Fonts\ShortimeSunday-9Ylx5.ttf" />
-	  <None Remove="Resources\Fonts\Signspaintedscript-owLJB.ttf" />
-	  <None Remove="Resources\Fonts\SpicyHotdog-gxVpE.ttf" />
-	  <None Remove="Resources\Fonts\SpicyNachos-BWJqw.ttf" />
-	  <None Remove="Resources\Fonts\SuperHappyDemo-MVKBp.ttf" />
-	  <None Remove="Resources\Fonts\Travesty-K7XmZ.ttf" />
-	  <None Remove="Resources\Fonts\TypoRgbOutlinedemo-Ean9W.otf" />
-	  <None Remove="Resources\Images\color.png" />
-	  <None Remove="Resources\Images\kalendar.png" />
+	  <None Remove="Resources\Images\lio.jpg" />
+	  <None Remove="Resources\Images\marvime.jpg" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -99,16 +63,69 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Pages\" />
+	  <Compile Update="Pages\EditNotePage.xaml.cs">
+	    <DependentUpon>EditNotePage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="Controls\FlyoutHeaderView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\AddNotePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\EditNotePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Dictonarys\Converters.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\AmericandreamsRegular-1Gg2v.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Aqira-Wyg0n.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Badgline-gxKOq.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\BakeryHolland-rgM8B.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Banetty-lg1Kw.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\BarbieDoll-p7Yqd.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Blanvad-mLdwa.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\ChorneilRegular-7BVJR.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Cleudia-JRYpj.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\DinoRegular-X3pwg.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Doknatle-d9YRE.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Fortieth-7BarD.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\FunkyFoodieDoodie-DOlG3.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Hagi-MVKOP.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Haidenisa-rgMdx.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Hanking-1GgZZ.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Harima-X3od9.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Home888-ALVRM.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Humayra-3z4mp.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\IWantMyTtr-ALV8p.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\MadfoolRegular-lgm2V.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Malonet-vmWYO.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\NightScreamPersonalUse-OV0xo.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\OnelySans-7BVzl.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\OpenSans-Regular.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\OpenSans-Semibold.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\PamelloGlenstar-GORZP.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Rampwind-WygP9.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Robienz-8M94n.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\ScaryNotesPersonalUse-ZVAxl.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Shirlock-rgMgy.otf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\ShortimeSunday-9Ylx5.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Signspaintedscript-owLJB.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\SpicyHotdog-gxVpE.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\SpicyNachos-BWJqw.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\SuperHappyDemo-MVKBp.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Travesty-K7XmZ.ttf" />
+	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\TypoRgbOutlinedemo-Ean9W.otf" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\RichTextEditor\FormattableTextEditor\FormattableTextEditor.csproj" />
 	</ItemGroup>
 
 </Project>

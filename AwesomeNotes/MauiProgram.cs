@@ -1,6 +1,9 @@
-﻿using AwesomeNotes.Services;
+﻿using AwesomeNotes.Controls;
+using AwesomeNotes.Services;
 using CommunityToolkit.Maui;
+using FormattableTextEditor;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls.Compatibility.Hosting;
 using Sharpnado.CollectionView;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
@@ -17,6 +20,8 @@ namespace AwesomeNotes
                 .RegisterServices()
                 .UseSharpnadoCollectionView(loggerEnable: false)
                 .UseMauiCommunityToolkit()
+                .UseMauiCompatibility()
+                .UseFormattableTextEditor()
                 .ConfigureFonts(fonts =>
                 {
                     RegisterFonts(fonts);
