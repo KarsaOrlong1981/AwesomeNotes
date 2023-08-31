@@ -12,5 +12,6 @@ public partial class EditNotePage : ContentPage
 		InitializeComponent();
 		BindingContext = _vm;
 		
-	}   
+	}
+   
 }

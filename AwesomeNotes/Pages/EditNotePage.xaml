@@ -59,7 +59,9 @@
                    />
                 </Border>
                     <Grid HeightRequest="300" BackgroundColor="{Binding Note.Background}">
-                        <richTextEditor:HtmlEditor Text="{Binding EditorText}"
+                        <richTextEditor:HtmlEditor x:Name="fEditor"
+                                                   Text="{Binding EditorText}"
+                                                   EditModeEnds="{Binding EditModeEnds}"
                                                    FormattedText="{Binding FormattedText}" 
                                                    CanSetHtmlText="{Binding CanSetHtmlText}"
                                                    FontSize="{Binding Note.FontSize}"

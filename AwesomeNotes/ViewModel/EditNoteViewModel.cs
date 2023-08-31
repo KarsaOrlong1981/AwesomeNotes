@@ -15,7 +15,7 @@ using System.Windows.Input;
 
 namespace AwesomeNotes.ViewModel
 {
-    public enum EeditMode { None, FontFamily, FontSize, FontAttributes, Color, Media }
+    public enum EEditMode { None, FontFamily, FontSize, FontAttributes, Color, Media }
     public partial class EditNoteViewModel : ObservableObject
     {
         private IServiceProvider provider;
@@ -32,7 +32,7 @@ namespace AwesomeNotes.ViewModel
             this.TextColor = BackgroundHelper.CurrentTextColor;
             this.FontNames = FontsHelper.GetFontAliasList();
             this.FontSize = Note.FontSize;
-            this.EditMode = EeditMode.None;
+            this.EditMode = EEditMode.None;
             this.FormattedText = Note.Text;
             this.EditorText = Note.Text;
         }
@@ -66,27 +66,51 @@ namespace AwesomeNotes.ViewModel
         [ObservableProperty] private Color backgroundColor;  
         [ObservableProperty] private Color textColor;
         [ObservableProperty] private Note note;
-        [ObservableProperty] private EeditMode editMode; 
+        [ObservableProperty] private EEditMode editMode; 
         [ObservableProperty] private List<string> fontNames;
         [ObservableProperty] private string font;
         [ObservableProperty] private double fontSize = 20;
         [ObservableProperty] private string formattedText;
-        [ObservableProperty] private bool canSetHtmlText;
         [ObservableProperty] private string editorText;
 
+        private bool canSetHtmlText;
+        public bool CanSetHtmlText
+        {
+            get => canSetHtmlText;
+            set
+            {
+               
+                canSetHtmlText = value; 
+                OnPropertyChanged(nameof(CanSetHtmlText));
+            }
+        }
+        private bool editModeEnds;
+        public bool EditModeEnds
+        {
+            get => editModeEnds;
+            set
+            {
 
+                editModeEnds = value;
+                if (editModeEnds)
+                {
+                    EditMode = EEditMode.None;
+                }
+                OnPropertyChanged(nameof(EditModeEnds));
+            }
+        }
         #endregion
         #region Commands
 
         [RelayCommand]
         private void ChangeFontFamily()
         {
-            EditMode = EeditMode.FontFamily;
+            EditMode = EEditMode.FontFamily;
         }
         [RelayCommand]
         private void ChangeFontSize() 
         {
-            EditMode = EeditMode.FontSize;
+            EditMode = EEditMode.FontSize;
         }
 
         [RelayCommand]
@@ -94,7 +118,7 @@ namespace AwesomeNotes.ViewModel
         {
             Note.FontFamily = Font;
             UpdateCategorie();
-            EditMode = EeditMode.None;
+            EditMode = EEditMode.None;
         }
         [RelayCommand]
         private void FontSizeChanged(double value)
@@ -116,19 +140,19 @@ namespace AwesomeNotes.ViewModel
         [RelayCommand]
         private void FontSizeFinished()
         {
-            EditMode = EeditMode.None;
+            EditMode = EEditMode.None;
         }
 
         [RelayCommand]
         private void ChnageFontAttributes()
         {
-            EditMode = EeditMode.FontAttributes;         
+            EditMode = EEditMode.FontAttributes;         
         }
 
         [RelayCommand]
         private void AcceptAttributes()
         {
-            EditMode = EeditMode.None;
+            EditMode = EEditMode.None;
         }
 
 
