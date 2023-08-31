@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,11 +28,14 @@ namespace AwesomeNotes.ViewModel
             TextColor = BackgroundHelper.GetTextColor();
             PickedTextColor = TextColor;
             BackgroundHelper.CurrentTextColor = TextColor;
-            Categorie = provider.GetService<ICategorieService>().GetCategorie();
+            //Categorie = provider.GetService<ICategorieService>().GetCategorie();
+            Categories = provider.GetService<ISaveService>().GetCategories();
+            Categorie = Categories.Where(c => c.Name == provider.GetService<ISaveService>().GetLastCategorie()).First();
             Notes = Categorie.Notes;
-            Categories = provider.GetService<ICategorieService>().GetCategories();
+            //sternchen setzen
             UpdateCategorie();
-            provider.GetService<ICategorieService>().UpdateCategoriesEvent += MainViewModel_UpdateCategoriesEvent;
+
+            provider.GetService<ISaveService>().CategoriesChanged += MainViewModel_UpdateCategoriesEvent;
         }
 
         private void UpdateCategorie()
@@ -41,7 +45,7 @@ namespace AwesomeNotes.ViewModel
                 if (item.Name == Categorie.Name)
                 {
                     item.IsSelected = true;
-                    provider.GetService<ICategorieService>().SaveCategorie(item);
+                    provider.GetService<ISaveService>().SaveLastCategorie(item.Name);
                 }
                 else
                     item.IsSelected = false;
@@ -49,15 +53,39 @@ namespace AwesomeNotes.ViewModel
                 item.TextColor = TextColor;
                 item.BackgroundColor = BackgroundColor;
             }
-
+            provider.GetService<ISaveService>().UpdateAllCategories(Categories);
             OnPropertyChanged(nameof(Categorie));
         }
 
         private void MainViewModel_UpdateCategoriesEvent(object sender, EventArgs e)
         {
-            Categories = provider.GetService<ICategorieService>().GetCategories();
-            Categorie = provider.GetService<ICategorieService>().GetCategorie();
-            UpdateChangeCategorie(Categorie);
+            Categories = provider.GetService<ISaveService>().GetCategories();
+            Categorie = Categories.Where(c => c.Name == provider.GetService<ISaveService>().GetLastCategorie()).First();
+            Notes = Categorie?.Notes;      
+        }
+       
+        private void UpdateChangeCategorie(Categorie categorie)
+        {
+            Notes = categorie.Notes;
+            Categorie.IsSelected = true;
+            foreach (var cat in Categories)
+            {
+                if (cat.Name != categorie.Name)
+                {
+                    cat.IsSelected = false;
+                }
+                else
+                {
+                    cat.IsSelected = true;
+                    provider.GetService<ISaveService>().SaveLastCategorie(cat.Name);
+                }
+                   
+                cat.BackgroundColor = BackgroundHelper.CurrentBackGround;
+                cat.TextColor = BackgroundHelper.CurrentTextColor;
+            }
+            provider.GetService<ISaveService>().UpdateAllCategories(Categories);
+            Categorie = Categories.Where(c => c.Name == provider.GetService<ISaveService>().GetLastCategorie()).First();
+            OnPropertyChanged(nameof(Categorie));
         }
 
         #region Propertys
@@ -95,40 +123,19 @@ namespace AwesomeNotes.ViewModel
         [RelayCommand]
         private void CategorieSelectionChanged(Categorie categorie)
         {
-            UpdateChangeCategorie(categorie);
-            provider.GetService<ICategorieService>().SaveCategorie(categorie);
-
-        }
-
-        private void UpdateChangeCategorie(Categorie categorie)
-        {
-            Notes = provider.GetService<ICategorieService>().GetCategorieByName(categorie.Name).Notes;
             Categorie = categorie;
-            Categorie.IsSelected = true;
-            foreach (var cat in Categories)
-            {
-                if (cat.Name != categorie.Name)
-                {
-                    cat.IsSelected = false;
-                }
-                else
-                    cat.IsSelected = true;
-                cat.BackgroundColor = BackgroundHelper.CurrentBackGround;
-                cat.TextColor = BackgroundHelper.CurrentTextColor;
-            }
-            OnPropertyChanged(nameof(Categorie));
+            UpdateChangeCategorie(categorie);       
         }
+
+       
 
         [RelayCommand]
         private async Task NotesSelectionChanged(Note note) 
         {
             Note = note;
-            provider.GetService<INoteService>().SaveCurrentNote(note);
-            //BackgroundHelper.CurrentBackGround = BackgroundColor;
-            //BackgroundHelper.CurrentTextColor = TextColor;
-            await ShellNavigation.GoToDetailAsync("EditNotePage");
-            //var action =  await Application.Current.MainPage.DisplayActionSheet(note.Title, "Abbrechen", "", "Lesen/Bearbeiten", "Löschen");
-            
+            provider.GetService<ISaveService>().SaveCurrentNote(note);
+            provider.GetService<ISaveService>().UpdateAllCategories(Categories);
+            await ShellNavigation.GoToDetailAsync("EditNotePage");      
         }
         [RelayCommand]
         private void DeleteNote(Note note)
@@ -186,14 +193,19 @@ namespace AwesomeNotes.ViewModel
         [RelayCommand]
         private void DragAndDropEnded()
         {
-            provider.GetService<ICategorieService>().SaveOrderedCategories(Categories);
+            OnPropertyChanged(nameof(Categories));
+            provider.GetService<ISaveService>().InvokeCategoriesChangedEvent();
+            provider.GetService<ISaveService>().UpdateAllCategories(Categories);
+            //provider.GetService<ICategorieService>().SaveOrderedCategories(Categories);
         }
 
         [RelayCommand]
         private void NotesDragAndDropEnded()
         {
             Categorie.Notes = Notes;
-            provider.GetService<INoteService>().SaveNotes(Categorie);
+            OnPropertyChanged(nameof(Categories));
+            provider.GetService<ISaveService>().UpdateAllCategories(Categories);
+            //provider.GetService<ICategorieService>().SaveCurrentCategorieNotes(Categorie);
         }
         #endregion 
     }

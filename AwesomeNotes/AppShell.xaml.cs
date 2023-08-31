@@ -15,12 +15,11 @@ namespace AwesomeNotes
 
         private void AppShell_Navigated(object sender, ShellNavigatedEventArgs e)
         {
+
             //var provider = ServiceHelper.ServiceProvider;
             //if (CurrentState.Location.OriginalString == "//MainPage")
             //{
-            //   var service = provider.GetService<ICategorieService>();
-            //    var update = service.UpdateCategoriesEvent;
-            //   service.UpdateCategoriesEvent?.Invoke(this, EventArgs.Empty);
+            //    provider.GetService<ISaveService>().InvokeCategoriesChangedEvent();
             //}
         }
     }

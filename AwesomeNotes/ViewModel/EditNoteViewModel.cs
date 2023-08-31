@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -19,13 +20,14 @@ namespace AwesomeNotes.ViewModel
     {
         private IServiceProvider provider;
         private Categorie categorie;
-       
+        private ObservableCollection<Categorie> categories;
 
         public EditNoteViewModel() 
         {
             this.provider = ServiceHelper.ServiceProvider;
-            this.Note = provider.GetService<INoteService>().GetCurrentNote();
-            this.categorie = provider.GetService<ICategorieService>().GetCategorie();
+            this.Note = provider.GetService<ISaveService>().GetCurrentNote();
+            this.categories = provider.GetService<ISaveService>().GetCategories();
+            this.categorie = categories.Where(c => c.Name == provider.GetService<ISaveService>().GetLastCategorie()).First();
             this.BackgroundColor = BackgroundHelper.CurrentBackGround;   
             this.TextColor = BackgroundHelper.CurrentTextColor;
             this.FontNames = FontsHelper.GetFontAliasList();
@@ -37,7 +39,7 @@ namespace AwesomeNotes.ViewModel
 
         private void UpdateCategorie()
         {
-            
+            // Update Notes
             for (int i = 0; i < categorie.Notes.Count; i++)
             {
                 if (categorie.Notes[i].Id == Note.Id)
@@ -46,8 +48,17 @@ namespace AwesomeNotes.ViewModel
                     break;
                 }
             }
-            provider.GetService<ICategorieService>().SaveCategorie(categorie);
             
+            // Update Categories
+            for (int i = 0; i < categories.Count; i++)
+            {
+                if (categories[i].Name == categorie.Name)
+                {
+                    categories[i] = categorie;
+                    break;
+                }
+            }
+            provider.GetService<ISaveService>().UpdateAllCategories(categories);
         }
        
         #region Propertys
@@ -97,9 +108,10 @@ namespace AwesomeNotes.ViewModel
             CanSetHtmlText = true;
             Note.Text = FormattedText;
             UpdateCategorie();
+            provider.GetService<ISaveService>().InvokeCategoriesChangedEvent();
             
-            provider.GetService<ICategorieService>().UpdateNotesForCategorie(categorie);
             await ShellNavigation.GoToPageAsync("MainPage");
+            
         }
         [RelayCommand]
         private void FontSizeFinished()

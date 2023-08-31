@@ -48,7 +48,7 @@
                     <controls:DraggableCollectionView
                              Margin="5"
                              VerticalOptions="CenterAndExpand" 
-                             ItemsSource="{Binding Categories}" 
+                             ItemsSource="{Binding Categories, Mode=TwoWay}" 
                              ItemHeight="50"
                              ItemWidth="130"
                              ItemSpacing="10"
@@ -117,7 +117,7 @@
                 
             <controls:DraggableCollectionView
                 
-                 ItemsSource="{Binding Notes}" 
+                 ItemsSource="{Binding Notes, Mode=TwoWay}" 
                  HeightRequest="500" 
                  ItemHeight="120"
                  ItemWidth="150"

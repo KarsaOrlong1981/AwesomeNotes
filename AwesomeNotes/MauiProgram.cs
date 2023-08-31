@@ -37,8 +37,7 @@ namespace AwesomeNotes
         private static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
         {
             //Services
-            builder.Services.AddSingleton<INoteService, NoteService> ();
-            builder.Services.AddSingleton<ICategorieService, CategorieService> ();
+            builder.Services.AddSingleton<ISaveService, SaveService> ();
             //Transients
             builder.Services.AddTransient<MainPage>();
             return builder;
