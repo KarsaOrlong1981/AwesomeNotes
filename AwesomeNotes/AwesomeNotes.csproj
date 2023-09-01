@@ -66,6 +66,9 @@
 	  <Compile Update="Pages\EditNotePage.xaml.cs">
 	    <DependentUpon>EditNotePage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Platforms\Android\EntryRendererDroid.cs">
+	    <ExcludeFromCurrentConfiguration>true</ExcludeFromCurrentConfiguration>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>

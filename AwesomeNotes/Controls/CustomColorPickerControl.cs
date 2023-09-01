@@ -154,7 +154,10 @@ namespace AwesomeNotes.Controls
             {
                 "#f8f8ff",
                 "#7fff00",
+                "#008000",
                 "#ff00ff",
+                "#BFEFFF",
+                "#8F00FF",
                 "#0000ff",
                 "#ffff00"
             };
@@ -181,7 +184,10 @@ namespace AwesomeNotes.Controls
             {
                 "#f8f8ff",
                 "#7fff00",
+                "#008000",
                 "#ff00ff",
+                "#BFEFFF",
+                "#8F00FF",
                 "#0000ff",
                 "#ffff00"
             };

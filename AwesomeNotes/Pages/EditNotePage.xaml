@@ -35,6 +35,7 @@
    
     <VerticalStackLayout>
         <Border Margin="8" 
+                IsVisible="{Binding EditMode, Converter={StaticResource EnumToBoolInverted}, ConverterParameter=Color}"
                 BackgroundColor="{Binding Note.Background}"
                 Stroke="{Binding Note.TextColor}"
                 StrokeThickness="4"
@@ -58,21 +59,25 @@
                  HeightRequest="60"
                    />
                 </Border>
-                    <Grid HeightRequest="300" BackgroundColor="{Binding Note.Background}">
-                        <richTextEditor:HtmlEditor x:Name="fEditor"
-                                                   Text="{Binding EditorText}"
-                                                   EditModeEnds="{Binding EditModeEnds}"
-                                                   FormattedText="{Binding FormattedText}" 
-                                                   CanSetHtmlText="{Binding CanSetHtmlText}"
-                                                   FontSize="{Binding Note.FontSize}"
-                                                   Keyboard="Text"
-                                                   IsSpellCheckEnabled="False"
-                                                   TextColor="{Binding Note.TextColor}"
-                                                   FontFamily="{Binding Note.FontFamily}"
-                                                   Margin="4"
-                                                   BackgroundColor="{Binding Note.Background}"/>
-
+                   
+                        <Grid HeightRequest="300" BackgroundColor="{Binding Note.Background}">
+                        <ScrollView>
+                            <richTextEditor:HtmlEditor x:Name="fEditor"
+                                Text="{Binding EditorText}"
+                                EditModeEnds="{Binding EditModeEnds}"
+                                FormattedText="{Binding FormattedText}" 
+                                CanSetHtmlText="{Binding CanSetHtmlText}"
+                                FontSize="{Binding Note.FontSize}"
+                                Keyboard="Text"
+                                IsSpellCheckEnabled="False"
+                                TextColor="{Binding Note.TextColor}"
+                                FontFamily="{Binding Note.FontFamily}"
+                                Margin="4"
+                                BackgroundColor="{Binding Note.Background}"/>
+                        </ScrollView>
                     </Grid>
+                   
+                   
                 <!--Platzhalter Medien bilder-->
                 <HorizontalStackLayout HorizontalOptions="CenterAndExpand" >
                     <!-- Hier muss eine Horizontale Collection view hin wo man alle bilder durchsrcollen kann, beim klick auf das Bild soll eine Vollbild ansicht angezeigt werden. -->
@@ -94,7 +99,7 @@
                 <ImageButton HeightRequest="50" WidthRequest="50" Source="attributes.png"
                          CornerRadius="5" BorderColor="Black" BorderWidth="5" BackgroundColor="White" Aspect="AspectFit" Command="{Binding ChnageFontAttributesCommand}" />
                 <ImageButton HeightRequest="50" WidthRequest="50" Source="paint.png"
-                         CornerRadius="5" BorderColor="Black" BorderWidth="5" BackgroundColor="White" Aspect="AspectFit" />
+                         CornerRadius="5" BorderColor="Black" BorderWidth="5" BackgroundColor="White" Aspect="AspectFit" Command="{Binding ChangeColorCommand}" />
 
             </HorizontalStackLayout>
             <!-- Font Family -->
@@ -113,6 +118,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+        
             <!-- FontSize -->
             <controls:NumericUpDownControl IsVisible="{Binding EditMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=FontSize}"
                                            HeightRequest="50"
@@ -130,12 +136,34 @@
                                            AcceptChangesCommand="{Binding FontSizeFinishedCommand}"
                                            CurrentValue="{Binding FontSize}"
                                            />
+        
             <!-- Font Attributes -->
             <Border IsVisible="{Binding EditMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=FontAttributes}" >
                 <richTextEditor:StyleBar Padding="8" HorizontalOptions="Center"/>
             </Border>
+        
+            <!-- Color picker -->
+            <controls:CustomColorPickerControl 
+                     IsVisible="{Binding EditMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=Color}"
+                     BackgroundColor="{Binding Note.Background}"
+                     TextColor="{Binding Note.TextColor}" 
+                     PickedBackColor="{Binding PickedBackColor}"
+                     PickedTextColor="{Binding PickedTextColor}" 
+                     PickedBackColorChangedCommand="{Binding PickedBackColorChangedCommand}"
+                     PickedTextColorChangedCommand="{Binding PickedTextColorChangedCommand}"
+                     Command="{Binding AcceptColorCommand}"/>      
+        
             <!-- Accept edit button -->
-            <Button Margin="8" Text="Änderungen bestätigen" FontSize="Medium" Command="{Binding AcceptChangesCommand}" FontAttributes="Bold" BorderColor="{Binding TextColor}" BorderWidth="4" BackgroundColor="{Binding BackgroundColor}" TextColor="{Binding TextColor}"/>
+            <Button Margin="8" 
+                    IsVisible="{Binding EditMode, Converter={StaticResource EnumToBoolInverted}, ConverterParameter=Color}"
+                    Text="Änderungen bestätigen" 
+                    FontSize="Medium" 
+                    Command="{Binding AcceptChangesCommand}" 
+                    FontAttributes="Bold" 
+                    BorderColor="{Binding TextColor}" 
+                    BorderWidth="4" 
+                    BackgroundColor="{Binding BackgroundColor}" 
+                    TextColor="{Binding TextColor}"/>
     </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

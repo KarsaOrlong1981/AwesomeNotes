@@ -23,12 +23,11 @@ namespace AwesomeNotes.Services
             }
             else
             {
-                if (categorieList.Count < 4)
+                if (categorieList.Count < 3)
                 {
                     categorieList.Add(new Categorie { BackgroundColor = Colors.White, TextColor = Colors.Blue, Description = "", Name = "Alle Kategorien", Notes = CreateTestingNotes("Alle Kategorien") });
-                    categorieList.Add(new Categorie { BackgroundColor = Colors.White, TextColor = Colors.Blue, Description = "", Name = "Einkaufen" });
-                    categorieList.Add(new Categorie { BackgroundColor = Colors.White, TextColor = Colors.Blue, Description = "", Name = "Schule", Notes = CreateTestingNotes("Schule") });
-                    categorieList.Add(new Categorie { BackgroundColor = Colors.White, TextColor = Colors.Blue, Description = "", Name = "Wichtig" });
+                    categorieList.Add(new Categorie { BackgroundColor = Colors.White, TextColor = Colors.Blue, Description = "", Name = "CheckListen" });
+                    categorieList.Add(new Categorie { BackgroundColor = Colors.White, TextColor = Colors.Blue, Description = "", Name = "Wichtig", Notes = CreateTestingNotes("Wichtig") });
                 }
 
             }
@@ -88,7 +87,7 @@ namespace AwesomeNotes.Services
             var notes = new ObservableCollection<Note>();
             notes.Add(new Note { Id = "Note1" + Guid.NewGuid().ToString(), FontSize = 20, Title = "Note 1", Text = "Dies ist eine test Notiz.", FontFamily = "Dino", Categorie = categorie, Background = Colors.Gray, TextColor = Colors.White });
             notes.Add(new Note { Id = "Note2" + Guid.NewGuid().ToString(), FontSize = 20, Title = "Note 2", Text = "Dies ist eine test Notiz.", FontFamily = "Aqira", Categorie = categorie, Background = Colors.Blue, TextColor = Colors.White });
-            notes.Add(new Note { Id = "Note3" + Guid.NewGuid().ToString(), FontSize = 20, Title = "Note 3", Text = "Dies ist eine test Notiz.", FontFamily = "Pamello", Categorie = categorie, Background = Colors.Red, TextColor = Colors.White });
+            notes.Add(new Note { Id = "Note3" + Guid.NewGuid().ToString(), FontSize = 20, Title = "Note 3", Text = " - Noch möglichkeit zum löschen und hinzufügen von neuen Kategorien./n - die Kategorien (Alle Kategorien, Checklisten und Wichtig dürfen nicht gelöscht werden./n - Checklisetn muss extra seite bekommen um punkte ab zu hacken./n - Noch möglichkeit zur auswahl von bildern und zur aufnahme von Bildern, dazu eine collectionView mit auswahl möglichkeit und fullscreen anzeige./n - Kalendar mit anhängbaren notizen erstellen", FontFamily = "Pamello", Categorie = categorie, Background = Colors.Red, TextColor = Colors.White });
             notes.Add(new Note { Id = "Note4" + Guid.NewGuid().ToString(), FontSize = 20, Title = "Note 4", Text = "Dies ist eine test Notiz.", FontFamily = "SpicyNachos", Categorie = categorie, Background = Colors.Yellow, TextColor = Colors.Blue });
             notes.Add(new Note { Id = "Note5" + Guid.NewGuid().ToString(), FontSize = 20, Title = "Note 5", Text = "Dies ist eine test Notiz.", FontFamily = "OpenSansRegular", Categorie = categorie, Background = Colors.Green, TextColor = Colors.White });
             notes.Add(new Note { Id = "Note6" + Guid.NewGuid().ToString(), FontSize = 20, Title = "Note 6", Text = "Dies ist eine test Notiz.", FontFamily = "Dino", Categorie = categorie, Background = Colors.Violet, TextColor = Colors.White });

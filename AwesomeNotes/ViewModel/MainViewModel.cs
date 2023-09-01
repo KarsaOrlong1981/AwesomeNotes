@@ -138,9 +138,24 @@ namespace AwesomeNotes.ViewModel
             await ShellNavigation.GoToDetailAsync("EditNotePage");      
         }
         [RelayCommand]
-        private void DeleteNote(Note note)
+        private async Task DeleteNote(Note note)    
         {
-           
+            var action =  await Application.Current.MainPage.DisplayAlert(note.Title, "Wollen Sie diese Notiz wirklich Löschen ?","Ja", "Nein");
+            if (action)
+            {
+                Notes.Remove(note);
+
+                foreach (var categorie in Categories)
+                {
+                    if (categorie.Name == Categorie.Name)
+                    {
+                        categorie.Notes.Remove(note);
+                    }
+                }
+
+                provider.GetService<ISaveService>().UpdateAllCategories(Categories);
+            }
+            
         }
        
         [RelayCommand] 

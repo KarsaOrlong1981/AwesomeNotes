@@ -22,6 +22,13 @@ namespace AwesomeNotes
                 .UseMauiCommunityToolkit()
                 .UseMauiCompatibility()
                 .UseFormattableTextEditor()
+                .ConfigureMauiHandlers(handlers =>
+                {
+#if __ANDROID__
+                    handlers.AddCompatibilityRenderer(typeof(Entry), typeof(Droid.EntryRendererDroid));
+#endif
+
+                })
                 .ConfigureFonts(fonts =>
                 {
                     RegisterFonts(fonts);

@@ -1,4 +1,5 @@
-﻿using AwesomeNotes.Helper;
+﻿using Android.Webkit;
+using AwesomeNotes.Helper;
 using AwesomeNotes.Model;
 using AwesomeNotes.Navigation;
 using AwesomeNotes.Services;
@@ -72,6 +73,8 @@ namespace AwesomeNotes.ViewModel
         [ObservableProperty] private double fontSize = 20;
         [ObservableProperty] private string formattedText;
         [ObservableProperty] private string editorText;
+        [ObservableProperty] private Color pickedBackColor;
+        [ObservableProperty] private Color pickedTextColor;
 
         private bool canSetHtmlText;
         public bool CanSetHtmlText
@@ -154,7 +157,33 @@ namespace AwesomeNotes.ViewModel
         {
             EditMode = EEditMode.None;
         }
+        [RelayCommand]
+        private void ChangeColor()
+        {
+            EditMode |= EEditMode.Color;
+        }
 
+        [RelayCommand]
+        private void PickedBackColorChanged()
+        {
+            Note.Background = PickedBackColor;
+          
+        }
+
+        [RelayCommand]
+        private void PickedTextColorChanged()
+        {
+           Note.TextColor = PickedTextColor;
+           
+
+        }
+
+        [RelayCommand]
+        private void AcceptColor()
+        {
+            EditMode = EEditMode.None;
+
+        }
 
         #endregion
     }
