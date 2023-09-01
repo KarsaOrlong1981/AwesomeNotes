@@ -16,18 +16,18 @@ namespace AwesomeNotes.Services
         public ObservableCollection<Categorie> GetCategories()
         {
             var categorieList = new ObservableCollection<Categorie>();
-            if (Preferences.Default.ContainsKey("CurrentCategorieList"))
+            if (Preferences.Default.ContainsKey(Constants.CurrentCategorieListKey))
             {
-                var deSerializedList = Preferences.Default.Get("CurrentCategorieList", string.Empty);
+                var deSerializedList = Preferences.Default.Get(Constants.CurrentCategorieListKey, string.Empty);
                 categorieList = JsonConvert.DeserializeObject<ObservableCollection<Categorie>>(deSerializedList) ?? new ObservableCollection<Categorie>();
             }
             else
             {
                 if (categorieList.Count < 3)
                 {
-                    categorieList.Add(new Categorie { BackgroundColor = Colors.White, TextColor = Colors.Blue, Description = "", Name = "Alle Kategorien", Notes = CreateTestingNotes("Alle Kategorien") });
-                    categorieList.Add(new Categorie { BackgroundColor = Colors.White, TextColor = Colors.Blue, Description = "", Name = "CheckListen" });
-                    categorieList.Add(new Categorie { BackgroundColor = Colors.White, TextColor = Colors.Blue, Description = "", Name = "Wichtig", Notes = CreateTestingNotes("Wichtig") });
+                    categorieList.Add(new Categorie { BackgroundColor = Colors.White, TextColor = Colors.Blue, Description = "", Name = Constants.AllCategories, Notes = CreateTestingNotes(Constants.AllCategories) });
+                    categorieList.Add(new Categorie { BackgroundColor = Colors.White, TextColor = Colors.Blue, Description = "", Name = Constants.CheckLists });
+                    categorieList.Add(new Categorie { BackgroundColor = Colors.White, TextColor = Colors.Blue, Description = "", Name = Constants.Important, Notes = CreateTestingNotes(Constants.Important) });
                 }
 
             }
@@ -37,16 +37,16 @@ namespace AwesomeNotes.Services
 
         public void SaveLastCategorie(string categorie)
         {
-            Preferences.Default.Set("LastCategorie", categorie);
+            Preferences.Default.Set(Constants.LastCategorieKey, categorie);
         }
 
 
         public string GetLastCategorie()
         {
-            var lastCategorie = "Alle Kategorien";
-            if (Preferences.Default.ContainsKey("LastCategorie"))
+            var lastCategorie = Constants.AllCategories;
+            if (Preferences.Default.ContainsKey(Constants.LastCategorieKey))
             {
-                lastCategorie = Preferences.Default.Get("LastCategorie", string.Empty);
+                lastCategorie = Preferences.Default.Get(Constants.LastCategorieKey, string.Empty);
             }
             return lastCategorie;
         }
@@ -62,15 +62,15 @@ namespace AwesomeNotes.Services
         public void UpdateAllCategories(ObservableCollection<Categorie> categories)
         {
             var serializedList = JsonConvert.SerializeObject(categories);
-            Preferences.Default.Set("CurrentCategorieList", serializedList);
+            Preferences.Default.Set(Constants.CurrentCategorieListKey, serializedList);
         }
 
         public Note GetCurrentNote()
         {
             Note note = null;
-            if (Preferences.Default.ContainsKey("CurrentNote"))
+            if (Preferences.Default.ContainsKey(Constants.CurrentNoteKey))
             {
-                var deserializedNote = Preferences.Default.Get("CurrentNote", string.Empty);
+                var deserializedNote = Preferences.Default.Get(Constants.CurrentNoteKey, string.Empty);
                 note = JsonConvert.DeserializeObject<Note>(deserializedNote);
             }
             return note;
@@ -79,7 +79,7 @@ namespace AwesomeNotes.Services
         public void SaveCurrentNote(Note note)
         {
             var serializedNote = JsonConvert.SerializeObject(note);
-            Preferences.Default.Set("CurrentNote", serializedNote);
+            Preferences.Default.Set(Constants.CurrentNoteKey, serializedNote);
         }
 
         private ObservableCollection<Note> CreateTestingNotes(string categorie)

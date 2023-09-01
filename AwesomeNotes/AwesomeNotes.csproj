@@ -49,8 +49,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\accepta.gif" />
+	  <None Remove="Resources\Images\bolda.png" />
+	  <None Remove="Resources\Images\italicoa.png" />
 	  <None Remove="Resources\Images\lio.jpg" />
 	  <None Remove="Resources\Images\marvime.jpg" />
+	  <None Remove="Resources\Images\striketha.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -66,7 +70,13 @@
 	  <Compile Update="Pages\EditNotePage.xaml.cs">
 	    <DependentUpon>EditNotePage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Platforms\Android\Converter.cs">
+	    <ExcludeFromCurrentConfiguration>true</ExcludeFromCurrentConfiguration>
+	  </Compile>
 	  <Compile Update="Platforms\Android\EntryRendererDroid.cs">
+	    <ExcludeFromCurrentConfiguration>true</ExcludeFromCurrentConfiguration>
+	  </Compile>
+	  <Compile Update="Platforms\Android\HTMLEditorRendererDroid.cs">
 	    <ExcludeFromCurrentConfiguration>true</ExcludeFromCurrentConfiguration>
 	  </Compile>
 	</ItemGroup>
@@ -125,10 +135,6 @@
 	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\SuperHappyDemo-MVKBp.ttf" />
 	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\Travesty-K7XmZ.ttf" />
 	  <AndroidAsset Include="Platforms\Android\Resources\Assets\Fonts\TypoRgbOutlinedemo-Ean9W.otf" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\..\RichTextEditor\FormattableTextEditor\FormattableTextEditor.csproj" />
 	</ItemGroup>
 
 </Project>

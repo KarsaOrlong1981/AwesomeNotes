@@ -1,7 +1,6 @@
 ﻿using AwesomeNotes.Controls;
 using AwesomeNotes.Services;
 using CommunityToolkit.Maui;
-using FormattableTextEditor;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
 using Sharpnado.CollectionView;
@@ -21,11 +20,11 @@ namespace AwesomeNotes
                 .UseSharpnadoCollectionView(loggerEnable: false)
                 .UseMauiCommunityToolkit()
                 .UseMauiCompatibility()
-                .UseFormattableTextEditor()
                 .ConfigureMauiHandlers(handlers =>
                 {
 #if __ANDROID__
                     handlers.AddCompatibilityRenderer(typeof(Entry), typeof(Droid.EntryRendererDroid));
+                    handlers.AddCompatibilityRenderer(typeof(HtmlEditor), typeof(Droid.HtmlEditorRendererDroid));
 #endif
 
                 })
