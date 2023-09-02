@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<declare-styleable name="SKCanvasView">
+	<!-- Hier werden die Attribute für SKCanvasView definiert -->
+</declare-styleable>

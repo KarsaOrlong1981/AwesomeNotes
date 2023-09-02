@@ -1,9 +1,9 @@
-﻿using Android.Webkit;
-using AwesomeNotes.Helper;
+﻿using AwesomeNotes.Helper;
 using AwesomeNotes.Model;
 using AwesomeNotes.Navigation;
 using AwesomeNotes.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ namespace AwesomeNotes.ViewModel
 
         public EditNoteViewModel() 
         {
-            this.provider = ServiceHelper.ServiceProvider;
+            this.provider = Ioc.Default.GetService<IServiceProvider>();
             this.Note = provider.GetService<ISaveService>().GetCurrentNote();
             this.categories = provider.GetService<ISaveService>().GetCategories();
             this.categorie = categories.Where(c => c.Name == provider.GetService<ISaveService>().GetLastCategorie()).First();
@@ -36,6 +36,7 @@ namespace AwesomeNotes.ViewModel
             this.EditMode = EEditMode.None;
             this.FormattedText = Note.Text;
             this.EditorText = Note.Text;
+            this.PickedImages = new ObservableCollection<ImageSource>();
         }
 
         private void UpdateCategorie()
@@ -75,6 +76,8 @@ namespace AwesomeNotes.ViewModel
         [ObservableProperty] private string editorText;
         [ObservableProperty] private Color pickedBackColor;
         [ObservableProperty] private Color pickedTextColor;
+        [ObservableProperty] private ImageSource pickedImage;
+        [ObservableProperty] private ObservableCollection<ImageSource> pickedImages;
 
         private bool canSetHtmlText;
         public bool CanSetHtmlText
@@ -185,6 +188,43 @@ namespace AwesomeNotes.ViewModel
 
         }
 
+        [RelayCommand]
+        private void AddMedia()
+        {
+            Application.Current.Dispatcher.Dispatch(async () =>
+            {
+                var result = await MediaPicker.PickPhotoAsync();
+
+                if (result != null)
+                {
+                    PickedImage = ImageSource.FromFile(result.FullPath);
+                    PickedImages.Add(PickedImage);
+                    Note.ImageSources.Add(PickedImage);
+                    Note.HasAttachments = true;
+                    UpdateCategorie();
+                }
+
+            });
+        }
+
+        [RelayCommand]
+        private void CapturePhoto()
+        {
+            Application.Current.Dispatcher.Dispatch(async () =>
+            {
+                var result = await MediaPicker.CapturePhotoAsync();
+
+                if (result != null)
+                {
+                    PickedImage = ImageSource.FromFile(result.FullPath);
+                    PickedImages.Add(PickedImage);
+                    Note.ImageSources.Add(PickedImage);
+                    Note.HasAttachments = true;
+                    UpdateCategorie();
+                }
+
+            });
+        }
         #endregion
     }
 }

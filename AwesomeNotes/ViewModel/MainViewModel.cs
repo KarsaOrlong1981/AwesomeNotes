@@ -3,6 +3,7 @@ using AwesomeNotes.Model;
 using AwesomeNotes.Navigation;
 using AwesomeNotes.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -18,17 +19,15 @@ namespace AwesomeNotes.ViewModel
     {
         IServiceProvider provider;
 
-        public MainViewModel(IServiceProvider provider)
+        public MainViewModel()
         {
-            this.provider = provider;
-            ServiceHelper.ServiceProvider = provider;
+            this.provider = Ioc.Default.GetService<IServiceProvider>();
             BackgroundColor = BackgroundHelper.GetBackgroundColor();
             PickedBackColor = BackgroundColor;
             BackgroundHelper.CurrentBackGround = BackgroundColor;
             TextColor = BackgroundHelper.GetTextColor();
             PickedTextColor = TextColor;
             BackgroundHelper.CurrentTextColor = TextColor;
-            //Categorie = provider.GetService<ICategorieService>().GetCategorie();
             Categories = provider.GetService<ISaveService>().GetCategories();
             Categorie = Categories.Where(c => c.Name == provider.GetService<ISaveService>().GetLastCategorie()).First();
             Notes = Categorie.Notes;
@@ -89,32 +88,17 @@ namespace AwesomeNotes.ViewModel
         }
 
         #region Propertys
-        [ObservableProperty]
-        private ObservableCollection<Note> notes;
 
-        [ObservableProperty]
-        private Color backgroundColor;
-
-        [ObservableProperty]
-        private Color textColor;    
-
-        [ObservableProperty]
-        private bool canChangeBackground;
-
-        [ObservableProperty]
-        private Color pickedBackColor;
-
-        [ObservableProperty]
-        private Color pickedTextColor;
-
-        [ObservableProperty]
-        private ObservableCollection<Categorie> categories;
-
-        [ObservableProperty]
-        private Categorie categorie;
-
-        [ObservableProperty]
-        private Note note;
+        [ObservableProperty] private ObservableCollection<Note> notes;
+        [ObservableProperty] private Color backgroundColor;
+        [ObservableProperty] private Color textColor;    
+        [ObservableProperty] private bool canChangeBackground;
+        [ObservableProperty] private Color pickedBackColor;
+        [ObservableProperty] private Color pickedTextColor;
+        [ObservableProperty] private ObservableCollection<Categorie> categories;
+        [ObservableProperty] private Categorie categorie;
+        [ObservableProperty] private Note note;
+       
 
         #endregion
 
@@ -157,7 +141,14 @@ namespace AwesomeNotes.ViewModel
             }
             
         }
-       
+        [RelayCommand]
+        private void ShowAttachments()
+        {
+            // Seite mit collectionView zur auswahl der Bilder im Anhang, bei auswahl eines Bildes
+            // soll die PictureView page angezeigt werden und das foto im full screen.
+
+        }
+
         [RelayCommand] 
         private void ChangeBackground()
         {
@@ -205,22 +196,58 @@ namespace AwesomeNotes.ViewModel
         {
             await ShellNavigation.GoToDetailAsync("AddNotePage");
         }
-        [RelayCommand]
-        private void DragAndDropEnded()
-        {
-            OnPropertyChanged(nameof(Categories));
-            provider.GetService<ISaveService>().InvokeCategoriesChangedEvent();
-            provider.GetService<ISaveService>().UpdateAllCategories(Categories);
-            //provider.GetService<ICategorieService>().SaveOrderedCategories(Categories);
-        }
+
+        private Categorie dragStartsCategorie;
 
         [RelayCommand]
-        private void NotesDragAndDropEnded()
+        private void DragAndDropStarts(Categorie categorie)
         {
+            dragStartsCategorie = categorie;
+        }
+
+        private Note dragStartNote;
+
+        [RelayCommand]
+        private void NotesDragAndDropStarts(Note note)
+        {
+            dragStartNote = note;
+        }
+
+        private Categorie dragEndsCategorie;
+
+        [RelayCommand]
+        private void DragAndDropEnded(Categorie categorie)
+        {
+            int dragStartIndex = Categories.IndexOf(dragStartsCategorie);
+            int dragEndIndex = Categories.IndexOf(categorie);
+
+            var temp = Categories[dragStartIndex];
+            Categories[dragStartIndex] = Categories[dragEndIndex];
+            Categories[dragEndIndex] = temp;
+
+            OnPropertyChanged(nameof(Categories));
+            
+            provider.GetService<ISaveService>().UpdateAllCategories(Categories);
+            provider.GetService<ISaveService>().InvokeCategoriesChangedEvent();
+            
+        }
+
+        private Note dragEndsNote;
+
+        [RelayCommand]
+        private void NotesDragAndDropEnded(Note note)
+        {
+            int dragStartIndex = Notes.IndexOf(dragStartNote);
+            int dragEndIndex = Notes.IndexOf(note);
+
+            var temp = Notes[dragStartIndex];
+            Notes[dragStartIndex] = Notes[dragEndIndex];
+            Notes[dragEndIndex] = temp;
+
             Categorie.Notes = Notes;
             OnPropertyChanged(nameof(Categories));
             provider.GetService<ISaveService>().UpdateAllCategories(Categories);
-            //provider.GetService<ICategorieService>().SaveCurrentCategorieNotes(Categorie);
+            
         }
         #endregion 
     }

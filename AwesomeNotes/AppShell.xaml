@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:AwesomeNotes"
     xmlns:controls="clr-namespace:AwesomeNotes.Controls"
     Shell.FlyoutBehavior="Disabled">
-    <Shell.MenuItemTemplate>
+    <!--<Shell.MenuItemTemplate>
         <DataTemplate>
             <Grid ColumnDefinitions="0.2*,0.8*">
                 <Image Source="dotnet_bot.png"
@@ -19,18 +19,18 @@
                     VerticalTextAlignment="Center" />
             </Grid>
         </DataTemplate>
-    </Shell.MenuItemTemplate>
-    <Shell.FlyoutHeader>
+    </Shell.MenuItemTemplate>-->
+    <!--<Shell.FlyoutHeader>
         <controls:FlyoutHeaderView />
-    </Shell.FlyoutHeader>
-    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
-        <Tab Title="Hauptmenue" Icon="dotnet_bot.png">
+    </Shell.FlyoutHeader>-->
+    <!--<FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <Tab Title="Hauptmenue" Icon="dotnet_bot.png">-->
             <ShellContent
               Title="Awesome Notes"
               ContentTemplate="{DataTemplate local:MainPage}"
               Route="MainPage" />
-        </Tab>
+        <!--</Tab>
 
-    </FlyoutItem>
+    </FlyoutItem>-->
 
 </Shell>

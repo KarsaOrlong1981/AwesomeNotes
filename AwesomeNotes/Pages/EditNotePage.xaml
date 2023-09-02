@@ -38,7 +38,7 @@
                 BackgroundColor="{Binding Note.Background}"
                 Stroke="{Binding Note.TextColor}"
                 StrokeThickness="4"
-                HeightRequest="600">
+                HeightRequest="560">
             <VerticalStackLayout Padding="4" Spacing="20" BackgroundColor="{Binding Note.Background}">
                 <Border Margin="4"
                Stroke="{Binding Note.TextColor}"
@@ -59,7 +59,7 @@
                    />
                 </Border>
                    
-                        <Grid HeightRequest="300" BackgroundColor="{Binding Note.Background}">
+                        <Grid HeightRequest="280" BackgroundColor="{Binding Note.Background}">
                         <ScrollView>
                             <controls:HtmlEditor x:Name="fEditor"
                                 Text="{Binding EditorText}"
@@ -80,8 +80,15 @@
                 <!--Platzhalter Medien bilder-->
                 <HorizontalStackLayout HorizontalOptions="CenterAndExpand" >
                     <!-- Hier muss eine Horizontale Collection view hin wo man alle bilder durchsrcollen kann, beim klick auf das Bild soll eine Vollbild ansicht angezeigt werden. -->
-                    <Image Source="marvime.jpg" Aspect="AspectFit" HeightRequest="150" WidthRequest="150"/>
-                    <Image Source="lio.jpg" Aspect="AspectFit" HeightRequest="150" WidthRequest="150"/>
+                    <!--<Image Source="marvime.jpg" Aspect="AspectFit" HeightRequest="150" WidthRequest="150"/>
+                    <Image Source="lio.jpg" Aspect="AspectFit" HeightRequest="150" WidthRequest="150"/>-->
+                        <CollectionView ItemsSource="{Binding Note.ImageSources, Mode=TwoWay}" ItemsLayout="HorizontalList" WidthRequest="350" >
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding .}" HeightRequest="130" WidthRequest="130"/>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
      
                 </HorizontalStackLayout>
             </VerticalStackLayout>
@@ -99,6 +106,10 @@
                          CornerRadius="5" BorderColor="Black" BorderWidth="5" BackgroundColor="White" Aspect="AspectFit" Command="{Binding ChnageFontAttributesCommand}" />
                 <ImageButton HeightRequest="50" WidthRequest="50" Source="paint.png"
                          CornerRadius="5" BorderColor="Black" BorderWidth="5" BackgroundColor="White" Aspect="AspectFit" Command="{Binding ChangeColorCommand}" />
+                <ImageButton HeightRequest="50" WidthRequest="50" Source="media3ty.png"
+                         CornerRadius="5" BorderColor="Black" BorderWidth="5" BackgroundColor="White" Aspect="AspectFit" Command="{Binding AddMediaCommand}" />
+                <ImageButton HeightRequest="50" WidthRequest="50" Source="camera.png"
+                         CornerRadius="5" BorderColor="Black" BorderWidth="5" BackgroundColor="White" Aspect="AspectFit" Command="{Binding CapturePhotoCommand}" />
 
             </HorizontalStackLayout>
             <!-- Font Family -->

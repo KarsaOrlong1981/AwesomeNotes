@@ -9,7 +9,6 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:model="clr-namespace:AwesomeNotes.Model"
-             xmlns:sho="http://sharpnado.com"
              x:Name="mainPage"
              Background="{Binding BackgroundColor}" Shell.BackgroundColor="{Binding BackgroundColor}" x:DataType="vm:MainViewModel" >
   
@@ -45,34 +44,36 @@
                         BackgroundColor="{Binding BackgroundColor}"
                         Stroke="{Binding TextColor}"
                         StrokeThickness="3">
-                    <controls:DraggableCollectionView
+                    <controls:CustomDraggableCollectionView
                              Margin="5"
                              VerticalOptions="CenterAndExpand" 
                              ItemsSource="{Binding Categories, Mode=TwoWay}" 
-                             ItemHeight="50"
-                             ItemWidth="130"
-                             ItemSpacing="10"
                              HorizontalOptions="Center" 
-                             CollectionLayout="Horizontal"
-                             EnableDragAndDrop="True" 
-                             DragAndDropTrigger="LongTap"
-                             ScrollToItem="{Binding Categorie}"                
-                             TapCommand="{Binding CategorieSelectionChangedCommand}"
-                             DragAndDropEndedCommand="{Binding DragAndDropEndedCommand}"
+                             ItemsLayout="HorizontalList"                           
+                             ScrollToItem="{Binding Categorie}"                        
                              >                  
-                        <controls:DraggableCollectionView.ItemTemplate>
+                        <controls:CustomDraggableCollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:Categorie">
-                                <sho:DraggableViewCell>
-                                    <Grid>
-                                        <Border  
-                          Style="{StaticResource SelectedBorderStyle}"
-                          Stroke="{Binding TextColor}"
-                          StrokeThickness="3"
-                          WidthRequest="125"
-                          StrokeShape="RoundRectangle 20, 20, 20, 20"
-                          BackgroundColor="{Binding BackgroundColor}">
-                                            <HorizontalStackLayout HorizontalOptions="Center" >
-                                                <Label 
+                               
+                                <Grid>
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.CategorieSelectionChangedCommand, Source={x:Reference mainPage}}"
+                                                              CommandParameter="{Binding .}"/>
+                                        <DragGestureRecognizer CanDrag="True" 
+                                                               DragStartingCommand="{Binding Path=BindingContext.DragAndDropStartsCommand, Source={x:Reference mainPage}}" 
+                                                               DragStartingCommandParameter="{Binding .}"/>
+                                        <DropGestureRecognizer AllowDrop="True" 
+                                                               DropCommand="{Binding Path=BindingContext.DragAndDropEndedCommand, Source={x:Reference mainPage}}"
+                                                               DropCommandParameter="{Binding .}"/>
+                                    </Grid.GestureRecognizers>
+                                    <Border  
+                                              Stroke="{Binding TextColor}"
+                                              StrokeThickness="3"
+                                              WidthRequest="125"
+                                              StrokeShape="RoundRectangle 20, 20, 20, 20"
+                                              BackgroundColor="{Binding BackgroundColor}">
+                                        <HorizontalStackLayout HorizontalOptions="Center" >
+                                            <Label 
                                   Text="{Binding Name}" 
                                   HorizontalOptions="Center" 
                                   VerticalOptions="Center"  
@@ -82,7 +83,7 @@
                                   TextColor="{Binding TextColor}"  
                                   FontSize="10" 
                                   WidthRequest="80"/>
-                                                <Label 
+                                            <Label 
                                   IsVisible="{Binding IsSelected}"
                                   Text="*" 
                                   HorizontalOptions="Start" 
@@ -93,63 +94,55 @@
                                   TextColor="{Binding TextColor}"  
                                   FontSize="12" 
                                   WidthRequest="5"/>
-                                            </HorizontalStackLayout>
+                                        </HorizontalStackLayout>
 
-                                        </Border>
-                                        <Grid.Triggers>
-                                            <DataTrigger
-                                 Binding="{Binding Source={x:Reference DraggableViewCell}, Path=IsDragAndDropping}"
-                                 TargetType="Grid"
-                                 Value="True">
-                                                <Setter Property="Opacity"  Value="0.5" />
-                                            </DataTrigger>
-                                        </Grid.Triggers>
-                                    </Grid>
-                                </sho:DraggableViewCell>
-
+                                    </Border>
+                                   
+                                </Grid>
                             </DataTemplate>
-                        </controls:DraggableCollectionView.ItemTemplate>
-                    </controls:DraggableCollectionView>
+                        </controls:CustomDraggableCollectionView.ItemTemplate>
+                    </controls:CustomDraggableCollectionView>
                 </Border>
            
             
             <!-- Notes -->
                 
-            <controls:DraggableCollectionView
+            <controls:CustomDraggableCollectionView
                 
                  ItemsSource="{Binding Notes, Mode=TwoWay}" 
                  HeightRequest="500" 
-                 ItemHeight="120"
-                 ItemWidth="150"
-                 CollectionPadding="5,20,5,65"
-                 EnableDragAndDrop="True"
-                 DragAndDropTrigger="LongTap"
                  HorizontalOptions="FillAndExpand" 
-                 CollectionLayout="Grid"
-                 ColumnCount="3"
+                 ItemsLayout="VerticalGrid, 2"  
                  ScrollToItem="{Binding Note}"
-                 TapCommand="{Binding NotesSelectionChangedCommand}"
-                 DragAndDropEndedCommand="{Binding NotesDragAndDropEndedCommand}"
                  >    
-                <controls:DraggableCollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:Note">
-                        <sho:DraggableViewCell>
+                <controls:CustomDraggableCollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Note">
                             <Grid  >
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Path=BindingContext.NotesSelectionChangedCommand, Source={x:Reference mainPage}}"
+                                                          CommandParameter="{Binding .}"/>
+                                    <DragGestureRecognizer CanDrag="True" 
+                                                           DragStartingCommand="{Binding Path=BindingContext.NotesDragAndDropStartsCommand, Source={x:Reference mainPage}}"
+                                                           DragStartingCommandParameter="{Binding .}"/>
+                                    <DropGestureRecognizer AllowDrop="True" 
+                                                           DropCommand="{Binding Path=BindingContext.NotesDragAndDropEndedCommand, Source={x:Reference mainPage}}"
+                                                           DropCommandParameter="{Binding .}"/>
+                                </Grid.GestureRecognizers>
                                 <Border 
-                                    WidthRequest="120"
-                                    HeightRequest="120"
+                                    WidthRequest="180"
+                                    HeightRequest="180"
                                     StrokeShape="RoundRectangle 5, 5, 5, 5"
-                                    BackgroundColor="{Binding Background}">                 
+                                    BackgroundColor="{Binding Background}">
                                     <Grid Margin="3">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="20"/>
-                                                <RowDefinition Height="*" />
-                                                <RowDefinition Height="30" />
-                                            </Grid.RowDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="30"/>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="30" />
+                                        </Grid.RowDefinitions>
                                         <Border 
                                             Stroke="{Binding TextColor}"
                                             StrokeThickness="2"
-                                            WidthRequest="115"
+                                            WidthRequest="170"
                                             StrokeShape="RoundRectangle 5, 5, 0, 0"
                                             BackgroundColor="{Binding Background}"
                                             >
@@ -159,8 +152,9 @@
                                                 BackgroundColor="{Binding Background}" 
                                                 TextColor="{Binding TextColor}"  
                                                 FontFamily="{Binding FontFamily}"
-                                                FontSize="10" 
-                                                WidthRequest="100"/>                
+                                                FontSize="15" 
+                                                HeightRequest="20"
+                                                WidthRequest="160"/>
                                         </Border>
                                         <Label 
                                              Grid.Row="1"
@@ -173,7 +167,7 @@
                                              FontFamily="{Binding FontFamily}"
                                              FontSize="10" 
                                              WidthRequest="100"/>
-                                            <ImageButton Grid.Row="2" 
+                                        <ImageButton Grid.Row="2" 
                                                          VerticalOptions="EndAndExpand" 
                                                          HorizontalOptions="EndAndExpand" 
                                                          Source="delete.png" 
@@ -181,24 +175,27 @@
                                                          WidthRequest="30"
                                                          Command="{Binding Path=BindingContext.DeleteNoteCommand, Source={x:Reference mainPage}}"
                                                          CommandParameter="{Binding .}"/>
-                                            <!-- beim anklicken soll ein abfrage menü erscheinen Löschen Bearbeiten Teilen Ins Archiev-->
+                                        <ImageButton Grid.Row="2" 
+                                                     BackgroundColor="White" 
+                                                     BorderColor="{Binding TextColor}"
+                                                     BorderWidth="4"
+                                                     IsVisible="{Binding HasAttachments}"
+                                                     VerticalOptions="EndAndExpand" 
+                                                     HorizontalOptions="StartAndExpand" 
+                                                     Source="attached.png" 
+                                                     HeightRequest="30"
+                                                     WidthRequest="30"
+                                                     Command="{Binding Path=BindingContext.ShowAttachmentsCommand, Source={x:Reference mainPage}}"
+                                                     CommandParameter="{Binding .}"/>      
+                                        <!-- beim anklicken soll ein abfrage menü erscheinen Löschen Bearbeiten Teilen Ins Archiev-->
                                     </Grid>
 
                                 </Border>
-                                <Grid.Triggers>
-                                    <DataTrigger
-                                         Binding="{Binding Source={x:Reference DraggableViewCell}, Path=IsDragAndDropping}"
-                                         TargetType="Grid"
-                                         Value="True">                      
-                                        <Setter Property="Opacity"  Value="0.5" />
-                                    </DataTrigger>
-                                </Grid.Triggers>
+                                
                             </Grid>
-                        </sho:DraggableViewCell>
-                          
-                    </DataTemplate>
-                </controls:DraggableCollectionView.ItemTemplate>
-            </controls:DraggableCollectionView>
+                        </DataTemplate>
+                </controls:CustomDraggableCollectionView.ItemTemplate>
+            </controls:CustomDraggableCollectionView>
                 
                 <Border Stroke="{Binding TextColor}"
                         HorizontalOptions="EndAndExpand"

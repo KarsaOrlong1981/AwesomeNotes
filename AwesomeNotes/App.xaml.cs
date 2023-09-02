@@ -1,11 +1,10 @@
 ﻿namespace AwesomeNotes
 {
-    public partial class App : Application
+    public partial class App : AppProvider
     {
-        public App()
+        public App (IServiceProvider provider) : base(provider)
         {
             InitializeComponent();
-            Sharpnado.CollectionView.Initializer.Initialize(true, false);
             MainPage = new AppShell();
         }
     }

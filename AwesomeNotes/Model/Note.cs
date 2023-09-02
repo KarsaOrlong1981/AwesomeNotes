@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -69,9 +70,13 @@ namespace AwesomeNotes.Model
             set => SetProperty(ref textColor, value, nameof(TextColor)); 
         }
 
-        public ImageSource BackgroundImage { get; set; }
-
-        public List<ImageSource> ImageSources { get; set; }
+        private bool hasAttachments;
+        public bool HasAttachments
+        {
+            get => hasAttachments;
+            set => SetProperty(ref hasAttachments, value, nameof(HasAttachments));
+        }
+        public ObservableCollection<ImageSource> ImageSources { get; set; } = new ObservableCollection<ImageSource>();
 
         public DateTime DateTime { get; set; }
       

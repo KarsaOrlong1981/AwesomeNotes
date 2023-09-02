@@ -7,12 +7,12 @@ namespace AwesomeNotes
     {
         
 
-        public MainPage(IServiceProvider provider)
+        public MainPage()
         {
             InitializeComponent();
             
             //cv.ItemsSource = FontsHelper.GetFontAliasList();
-            BindingContext = new MainViewModel(provider);
+            BindingContext = new MainViewModel();
         }
 
         private void OnCounterClicked(object sender, EventArgs e)

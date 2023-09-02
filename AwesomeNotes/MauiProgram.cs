@@ -17,7 +17,6 @@ namespace AwesomeNotes
             builder
                 .UseMauiApp<App>()
                 .RegisterServices()
-                .UseSharpnadoCollectionView(loggerEnable: false)
                 .UseMauiCommunityToolkit()
                 .UseMauiCompatibility()
                 .ConfigureMauiHandlers(handlers =>
@@ -45,7 +44,7 @@ namespace AwesomeNotes
             //Services
             builder.Services.AddSingleton<ISaveService, SaveService> ();
             //Transients
-            builder.Services.AddTransient<MainPage>();
+            //builder.Services.AddTransient<MainPage>();
             return builder;
         }
 
